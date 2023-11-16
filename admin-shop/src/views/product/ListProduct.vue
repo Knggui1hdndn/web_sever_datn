@@ -14,16 +14,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Product 1</td>
-          <td>500000</td>
-          <td>250</td>
-          <td>120</td>
-          <td>20%</td>
+        <tr v-for="(item, index) in data" :key="item.id">
+          <th scope="row">{{ ++index }}</th>
+          <td>
+  <RouterLink :to="`products/${item.id}/details`" class="nav-link">
+
+    {{ item.name }}
+  </RouterLink>
+</td>
+
+          <td>{{ item.price }}</td>
+          <td>{{ getTotalQuatity(item
+          ) }}</td>
+          
+          <td>{{ item.Sole }}</td>
+          <td>{{ item.sale ? item.sale + '%' : '--' }}</td>
           <td class="">
             
-            <RouterLink to="products/1/edit" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
+            <RouterLink :to="`products/${item.id}/edit`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
           
             <span class="action-icon" data-bs-toggle="modal" data-bs-target="#deleteModel">
               <font-awesome-icon icon="fa-solid fa-trash" class="icon delete"/>
@@ -37,7 +45,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    Bạn có chắc muốn xóa sản phẩm ...
+                    Bạn có chắc muốn xóa sản phẩm <span class="fw-bold">{{ item.name }}</span>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -54,6 +62,22 @@
 </template>
 
 <script setup>
+import ApiService from "@/services/api.service";
+import { ref } from "vue";
+const data = ref([])
+
+async function fetchData() {
+  const response = await ApiService.get("/products");
+  console.log(response);
+  data.value = response.data;
+}
+
+function getTotalQuatity(product) {
+  return product.quantity;
+
+}
+
+fetchData();
 
 </script>
 
