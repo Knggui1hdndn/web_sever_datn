@@ -27,6 +27,8 @@
 <style scoped>
 .wrap {
   padding: 16px 0 16px 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .nav-link {

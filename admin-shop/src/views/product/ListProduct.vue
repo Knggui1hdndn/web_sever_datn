@@ -1,6 +1,8 @@
 <template>
   <div class="p-3">
     <h3 class="fs-5 mb-4">Danh sách sản phẩm</h3>
+    <RouterLink to="products/addproduct" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon edit"/></span></RouterLink>
+
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -32,7 +34,8 @@
           <td class="">
             
             <RouterLink :to="`products/${item.id}/edit`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
-          
+            <RouterLink :to="`products/addproduct2`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
+
             <span class="action-icon" data-bs-toggle="modal" data-bs-target="#deleteModel">
               <font-awesome-icon icon="fa-solid fa-trash" class="icon delete"/>
             </span>
@@ -44,6 +47,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa sản phẩm</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  
                   <div class="modal-body">
                     Bạn có chắc muốn xóa sản phẩm <span class="fw-bold">{{ item.name }}</span>
                   </div>
@@ -68,7 +72,6 @@ const data = ref([])
 
 async function fetchData() {
   const response = await ApiService.get("/products");
-  console.log(response);
   data.value = response.data;
 }
 
