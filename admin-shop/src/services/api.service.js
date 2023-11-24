@@ -11,9 +11,9 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-  let jwtToken = localStorage.getItem("token") || ""
-  if (jwtToken) {
-    config.headers["Authorization"] = "Bearer " + jwtToken;
+  let token = localStorage.getItem("token") || ""
+  if (token) {
+    config.headers["Authorization"] = "Bearer " + token;
   }
   return config;
 },
@@ -28,10 +28,10 @@ instance.interceptors.response.use((response) => {
     const status = error.response ? error.response.status : null;
     // Nếu không xác thực, xóa mã jwt và chuyển hướng người dùng về trang đăng nhập
     if (status === 401) {
-      // localStorage.removeItem('token');
+      localStorage.removeItem('token');
       // localStorage.removeItem('fullname');
       // localStorage.removeItem('role');
-      // router.push("/login");
+      router.push("/login");
     }else if (status == 500 || status == 500) {
       router.push("/error/500");;
     }
