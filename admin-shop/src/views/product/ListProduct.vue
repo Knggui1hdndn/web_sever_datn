@@ -1,7 +1,7 @@
 <template>
   <div class="p-3">
     <h3 class="fs-5 mb-4">Danh sách sản phẩm</h3>
-    <RouterLink to="products/addproduct" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon edit"/></span></RouterLink>
+    <RouterLink to="/products/add" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon edit"/></span></RouterLink>
 
     <table class="table table-striped table-bordered">
       <thead>
@@ -9,6 +9,7 @@
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Price</th>
+          <th scope="col">Thể Loại </th>
           <th scope="col">Quantity</th>
           <th scope="col">Sole</th>
           <th scope="col">Sale</th>
@@ -19,13 +20,15 @@
         <tr v-for="(item, index) in data" :key="item.id">
           <th scope="row">{{ ++index }}</th>
           <td>
-  <RouterLink :to="`products/${item.id}/details`" class="nav-link">
+  <RouterLink :to="`products/${item._id}/details`" class="nav-link">
 
     {{ item.name }}
   </RouterLink>
 </td>
 
           <td>{{ item.price }}</td>
+          <td>{{ item.idCata }}</td>
+
           <td>{{ getTotalQuatity(item
           ) }}</td>
           
@@ -33,8 +36,8 @@
           <td>{{ item.sale ? item.sale + '%' : '--' }}</td>
           <td class="">
             
-            <RouterLink :to="`products/${item.id}/edit`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
-            <RouterLink :to="`products/addproduct2`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
+            <RouterLink :to="`products/${item._id}/edit`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
+            <RouterLink :to="`products/${item._id}/addSP`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon add"/></span></RouterLink>
 
             <span class="action-icon" data-bs-toggle="modal" data-bs-target="#deleteModel">
               <font-awesome-icon icon="fa-solid fa-trash" class="icon delete"/>
@@ -73,6 +76,8 @@ const data = ref([])
 async function fetchData() {
   const response = await ApiService.get("/products");
   data.value = response.data;
+  console.log(response.data);
+
 }
 
 function getTotalQuatity(product) {

@@ -10,6 +10,8 @@
           <th scope="col">Số điện thoại</th>
           <th scope="col">Địa chỉ</th>
           <th scope="col">Email</th>
+           <th scope="col">Employed</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -20,6 +22,11 @@
           <td>250</td>
           <td>120</td>
           <td>20%</td>
+          <td>  <select name="emp" disabled>
+    <option>No</option>
+    <option>Yes</option>
+  </select></td>
+
         </tr>
       </tbody>
     </table>

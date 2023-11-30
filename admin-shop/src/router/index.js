@@ -24,7 +24,7 @@ const routes = [
       },
       {
         path: ":id/edit",
-        name: "Product",
+        name: "editProduct",
         component: () => import("../views/product/EditProduct.vue"),
       },
       {
@@ -33,13 +33,13 @@ const routes = [
         component: ()=> import("../views/product/DetailProduct.vue")
       },
       {
-        path:":/addproduct",
-        name : "Product",
+        path:"add",
+        name : "addProduct",
         component: ()=> import("../views/product/AddProduct.vue")
       },
       {
-        path:":/addproduct2",
-        name : "Product",
+        path:":id/addSP",
+        name : "addProduct2",
         component: ()=> import("../views/product/AddProduct2.vue")
       },
     ]

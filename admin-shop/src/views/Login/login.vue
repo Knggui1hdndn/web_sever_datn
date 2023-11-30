@@ -44,21 +44,26 @@ import ApiService from "@/services/api.service";
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
+
 import { ref } from 'vue';
 const email = ref('');
 const password = ref('');
 // const token = ref
-
 async function login() {
-  const response = await ApiService.post("/auth/signIn",{
-    account : email.value,
-    password : password.value
-  });
- 
-  if(response.status == 200) {
-    const token = response.headers.authorization;
-    localStorage.setItem('token', token);
-    router.push("/")
+  try {
+    const response = await ApiService.post("/auth/signIn", {
+      account: email.value,
+      password: password.value
+    });
+
+
+    if (response.status === 200) {
+      const token = response.headers.authorization;
+      localStorage.setItem('token', token);
+      router.push("/");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
   }
 }
 

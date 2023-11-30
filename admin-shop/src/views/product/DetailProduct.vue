@@ -25,14 +25,7 @@ import { ref, onMounted } from "vue";
 const product = ref(null);
 
 onMounted(async () => {
-  // Fetch the product data or set it from a parent component
-  // For example, if this component is used in a route, you might use the route params to fetch the product details.
-  // You can replace this part with your actual data-fetching logic.
-  // For example:
-  // const response = await ApiService.get(`/products/${productId}`);
-  // product.value = response.data;
-
-  // For the sake of the example, setting a mock product
+ 
   product.value = {
     "_id": "653890e702006aa106aff95a",
     "name": "Sample Product",
@@ -67,6 +60,7 @@ onMounted(async () => {
     ]
   };
 });
+
 </script>
 
 <style scoped>
