@@ -9,16 +9,12 @@
         <div class="col-12 col-md-6">
           <InputComp v-model="product.price" name="price" label="Giá" :rules="notBlank" />
         </div>
-        <div class="col-12 col-md-6">
-          <InputComp v-model="product.quantity" name="quantity" label="Số lượng" :rules="notBlank" />
-        </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12">
           <InputComp v-model="product.description" name="description" label="Mô tả" :rules="notBlank" />
         </div>
-        
-        <div class="col-12 col-md-6">
+        <!-- <div class="col-12 col-md-6">
           <SelectComp v-model="selectedSize" :items="size" itemTitle="size" itemValue="_id" name="Size" label="Size" />
-        </div>
+        </div> -->
         <div class="col-12 col-md-6">
           <InputComp v-model="product.sale" name="sale" label="Giảm giá" :rules="notBlank" />
         </div>
@@ -27,13 +23,45 @@
             label="Loại sản phẩm" />
         </div>
         <div class="col-12 col-md-6"></div>
-        <div class="col-12 col-md-6">
+        <!-- <div class="col-12 col-md-6">
           <SelectComp v-model="product.color" :items="colors" name="color" label="Màu sắc" />
-        </div>
+        </div> -->
      
       </div>
-      <div class="row">
-        <h3 class="fs-5 mb-4 mt-2">Hình ảnh</h3>
+      <div class="text-center">
+          <button type="button" class="btn btn-primary btn-block mb-4" @click="UpdateProduct">Cập nhật
+          </button>
+      </div>
+      <h3 class="fs-5 mb-4 mt-4">Cập nhật chi tiết sản phẩm</h3>
+      <div>
+        <div v-for="productDetail in product.productDetails" :key="productDetail._id"
+          class="d-flex align-items-center product-detail"
+        >
+          <div class="size">
+            <InputComp v-model="productDetail.size" :rules="notBlank" label="Kích cỡ"/>
+            <div class="text-center">
+              <button type="button" class="btn btn-primary" @click="UpdateProductDetail(productDetail._id, productDetail.size)">Cập nhật</button>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <div v-for="imageProductQuantity in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
+              class="d-flex align-items-center image-product-quantity"
+            >
+              <div class="flex-grow-1 pe-2">
+                <InputComp v-model="imageProductQuantity.quantity" label="Số lượng" :rules="notBlank" />
+              </div>
+              <div class="flex-grow-1 pe-2">
+                <InputComp v-model="imageProductQuantity.imageProduct.color" label="Màu sắc" :rules="notBlank" />
+              </div>
+              <div class="product-image">
+                <img :src="imageProductQuantity.imageProduct.image" alt="">
+              </div>
+              <button type="button" class="btn btn-primary ms-2" @click="UpdateProductQuantity(imageProductQuantity._id, imageProductQuantity.quantity, imageProductQuantity._id)">
+                <font-awesome-icon icon="fa-solid fa-repeat" class="icon delete"/>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,10 +76,6 @@ import { ref } from "vue";
 import { useRoute } from 'vue-router'
 const route = useRoute();
 const { id } = route.params;
-console.log(route);
-console.log(id);
-const {_id} = route.params;
-console.log(_id);
 
 let product = ref({
   name: "",
@@ -60,60 +84,53 @@ let product = ref({
   sale: "",
   description: "",
   idCata: "",
-
 })
-console.log(product);
 async function fetchData() {
-  const response = await ApiService.get("/products/details/" + id);
+  const response = await ApiService.get("/products/details/"+id);
   product.value = response.data;
-  // console.log(response.data);
-
+  console.log(product.value);
 }
 const categories = ref([])
 const Getcategories = async () => {
   try {
     const response = await ApiService.get("/categories");
     categories.value = response.data;
-    console.log(response.data);
   } catch (error) {
     console.log(error);
   }
 
 }
-const idCata = ref({
-  _id:"",
-  category:"",
-})
-const Getcate = async () =>{
-
-    const response = await ApiService.get("/products/details/" + id);
-    idCata.value = response.data
-  
+const UpdateProduct = async ()=>{
+  const response = await ApiService.put("/products" , {
+    name: product.value.name,
+    price: product.value.price,
+    sale: product.value.sale,
+    description: product.value.description,
+    idCata: product.value.idCata._id,
+    id: id,
+  })
+  console.log(response);
 }
-Getcate();
+
+const UpdateProductDetail = async (id, size)=>{
+  const response = await ApiService.put("/products/details" , {
+    idProductDetail: id,
+    size: size
+  })
+  console.log(response);
+}
+
+const UpdateProductQuantity = async (id, quantity, image)=>{
+  const response = await ApiService.put("/products/productQuantity" , {
+    idImageQuantity: id,
+    quantity: quantity,
+    image: image
+  })
+  console.log(response);
+}
+
 Getcategories();
 fetchData();
-const getSize = async () => {
-
-}
-// const getProducts = async () => {
-//     try {
-//         const response = await ApiService.post("products/"+id, {
-//             size: product.value.size,
-//         });
-//         console.log(response);
-//         if (response.status == 201 || response.status == 200) {
-//             const responseQuatity = await ApiService.post("products/productQuantity/"+response.data._id, {
-//                 idProductDetail: response.data._id,
-//                 imageProduct: idProductImage.value,
-//                 quantity: product.value.quantity
-//             })
-//             console.log(responseQuatity);
-//         }
-//     } catch (error) {
-//         console.log(error)
-//     }
-// } 
 
 let notBlank = [
   (v) => !!v || "Không được để trống"
@@ -122,4 +139,30 @@ let notBlank = [
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.product-detail {
+  border: 1px solid #333;
+}
+.product-detail .size {
+  padding: 12px 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.product-detail .image-product-quantity {
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  padding: 12px 8px;
+  flex: 1;
+  border-bottom: 1px solid #333;
+}
+.product-image {
+  width: 100px;
+}
+.product-image  img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

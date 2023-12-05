@@ -6,61 +6,54 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Username</th>
-          <th scope="col">Tên</th>
+          <th scope="col">Ảnh đại diện</th>
+          <th scope="col">Email</th>
           <th scope="col">Số điện thoại</th>
           <th scope="col">Địa chỉ</th>
-          <th scope="col">Email</th>
-           <th scope="col">Employed</th>
-          
+          <th scope="col">Employed</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Product 1</td>
-          <td>500000</td>
-          <td>250</td>
-          <td>120</td>
-          <td>20%</td>
-          <td>  <select name="emp" disabled>
-    <option>No</option>
-    <option>Yes</option>
-  </select></td>
-
+        <tr v-for="(item, index) in data" :key="item.id">
+          <th scope="row">{{ ++index }}</th>
+          <td>{{ item.name }}</td>
+          <td>
+            <img :src="item.avatar" alt="Avatar" class="avatar-image" />
+          </td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.phoneNumber }}</td>
+          <td>{{ item.address }}</td>
+          <td>
+            <select name="emp" :disabled="true">
+              <option>{{ item.employed ? 'Yes' : 'No' }}</option>
+            </select>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 
-<script setup>
-
-</script>
-
 <style scoped>
-.action-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
+.avatar-image {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  /* background-color: #ddd; */
-  font-size: 20px;
-  margin: 0 4px;
-  cursor: pointer;
-  transition: all linear .3s;
-}
-.action-icon:hover {
-  background-color: #ddd;
-}
-.action-icon  .icon {
-  font-size: 18px;
-}
-.icon.edit {
-  color: #3267e4;
-}
-.icon.delete {
-  color: #FF4C51;
+  object-fit: cover;
 }
 </style>
+
+<script setup>
+import ApiService from "@/services/api.service";
+import { ref } from "vue";
+
+const data = ref([]);
+
+async function fetchData() {
+  const response = await ApiService.get("/users/listUser");
+  data.value = response.data;
+  console.log(response.data);
+}
+
+fetchData();
+</script>
