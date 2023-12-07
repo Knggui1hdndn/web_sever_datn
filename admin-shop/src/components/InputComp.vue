@@ -33,7 +33,7 @@ export default {
     hideMessage: Boolean,
     placeholder: String,
     rules: Array,
-    modelValue: String,
+    modelValue: String | Number,
     dateType: Boolean,
   },
   data() {
