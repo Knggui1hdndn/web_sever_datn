@@ -62,7 +62,7 @@ const Getcategories = async () => {
         const response = await ApiService.get("/categories");
         categories.value = response.data;
 
-        console.log("Product saved successful!ly");
+        console.log(categories.value);
     } catch (error) {
         console.log(error);
     }

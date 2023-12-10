@@ -1,7 +1,19 @@
 <template>
   <div class="p-3">
     <h3 class="fs-5 mb-4">Danh sách sản phẩm</h3>
-    <RouterLink to="/products/add" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon edit"/></span></RouterLink>
+    <div class="row-container">
+      <div class="pro">
+  <RouterLink to="/products/add" class="nav-link">
+    <span>Thêm sản phẩm</span>
+  </RouterLink>
+</div>
+    <div class="cate">
+  <RouterLink to="/products/addCate" class="nav-link">
+    <span>Thêm thể loại</span>
+  </RouterLink>
+  </div>
+
+</div>
 
     <table class="table table-striped table-bordered">
       <thead>
@@ -20,36 +32,29 @@
         <tr v-for="(item, index) in data" :key="item.id">
           <th scope="row">{{ ++index }}</th>
           <td>
-  <RouterLink :to="`products/${item._id}/details`" class="nav-link">
-
-    {{ item.name }}
-  </RouterLink>
-</td>
+              
+          {{ item.name }}
+          </td>
 
           <td>{{ item.price }}</td>
           <td>{{ item.idCata }}</td>
-
-          <td>{{ getTotalQuatity(item
-          ) }}</td>
-          
-          <td>{{ item.Sole }}</td>
+          <td>
+            <span v-for="(i,index) in countArr" :key="index">
+                 <span v-if="item._id ===  i.id">{{ i.total }}</span>
+            </span>
+          </td>
+          <td>{{ item.sold }}</td>
           <td>{{ item.sale ? item.sale + '%' : '--' }}</td>
           <td class="">
             
             <RouterLink :to="`products/${item._id}/edit`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit"/></span></RouterLink>
             <RouterLink :to="`products/${item._id}/addSP`" class="nav-link"><span class="action-icon"><font-awesome-icon icon="fa-solid fa-add" class="icon add"/></span></RouterLink>
 
-            <span class="action-icon" data-bs-toggle="modal" data-bs-target="#deleteModel">
-              <font-awesome-icon icon="fa-solid fa-trash" class="icon delete"/>
-            </span>
+           
             <!-- Modal -->
             <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                 
-                  
-                
-                
                 </div>
               </div>
             </div>
@@ -57,28 +62,61 @@
         </tr>
       </tbody>
     </table>
+    <div class="pagination">
+      <ul>
+        <li v-for="(i,index) in arrPage" :key="index" @click="getPage(i.page)">{{ i.page }}</li>
+      </ul>
+
+    </div>
   </div>
 </template>
 
 <script setup>
 import ApiService from "@/services/api.service";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 const data = ref([])
-
-async function fetchData() {
-  const response = await ApiService.get("/products");
+const totalPage = ref(0);
+const perPage = ref(5);
+const arrPage = ref([]);
+let totalPageCounts = 0;
+const fetchData = async (skip)=> {
+  console.log("skip",skip)
+  arrPage.value = [];
+  const response = await ApiService.get(`/products?skip=${skip ? skip:''}`);
   data.value = response.data;
-  console.log(response.data);
-
+  const totalPageCount = totalPage.value / perPage.value;
+  totalPageCounts = totalPage.value / perPage.value;
+  for(let i = 0; i < totalPageCount;i++){
+    arrPage.value = [...arrPage.value,{page:i,}]
+  }
+  console.log("arrPage.value", arrPage.value);
+  response.data.map((e)=>{
+    count(e._id)
+  })
 }
-
-function getTotalQuatity(product) {
-  return product.quantity;
-
+const getAll = async ()=>{
+  const response = await ApiService.get(`/products/get-all`);
+  totalPage.value = response.data.total.length;
 }
-
-fetchData();
-
+const getPage = (page)=>{
+  let skipItem  = (page + 1 - 1) * 5;
+  fetchData(skipItem)
+}
+let countArr = ref([]);
+const count = async (id)=>{
+  countArr.value = []
+  try{
+    let countValue = 0;
+    const response = await ApiService.get(`/products/${id}/count`)
+    countArr.value = [...countArr.value, { id: id, total: response.data }];
+  }catch(err){
+    console.log(err)
+  }
+}
+onMounted(() => {
+    fetchData();
+    getAll();
+});
 </script>
 
 <style scoped>
@@ -107,4 +145,64 @@ fetchData();
 .icon.delete {
   color: #FF4C51;
 }
+.row-container {
+    display: flex;
+    justify-content:center;
+  }
+
+  .pro {
+    margin-right: 10px; 
+  }
+
+  .pro .nav-link {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #dc3545; /* Red background color */
+    transition: background-color 0.3s ease;
+  }
+
+  .cate .nav-link {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #28a745; /* Green background color */
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-link span {
+    font-size: 14px;
+  }
+
+  .nav-link:hover {
+    background-color: #6c757d;
+  }
+  .pagination{
+    width: 100%;
+  }
+  .pagination span{
+    cursor: pointer;
+    background-color: silver;
+    height: 34px;
+    font-weight: 800;
+  }
+  .pagination span:hover{
+    background-color: #000;
+    color: #fff;
+  }
+  .pagination ul{
+    display: flex;
+    justify-content: space-around;
+    padding-left: 0px;
+  }
+  .pagination ul li{
+    cursor: pointer;
+    background-color: #28a745;
+    padding: 5px 10px;
+    list-style: none;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 </style>

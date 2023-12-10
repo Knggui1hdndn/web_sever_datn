@@ -16,8 +16,7 @@
                
                 <div class="row">
                     <h3 class="fs-5 mb-4 mt-2">Hình ảnh</h3>
-                    <!-- <input type="file" id="file" ref="myFiles" class="custom-file-input" 
-             @change="previewFiles" multiple> -->
+                   
                     <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
                         @change="(e) => handleFileUpload(e)" />
                         <img :src="previewImage">
