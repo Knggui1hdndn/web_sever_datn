@@ -1,60 +1,58 @@
 <template>
   <div class="p-3">
-    <h3 class="fs-5 mb-4">Danh sách người dùng</h3>
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Username</th>
-          <th scope="col">Ảnh đại diện</th>
-          <th scope="col">Email</th>
-          <th scope="col">Số điện thoại</th>
-          <th scope="col">Địa chỉ</th>
-          <th scope="col">Employed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in data" :key="item.id">
-          <th scope="row">{{ ++index }}</th>
-          <td>{{ item.name }}</td>
-          <td>
-            <img :src="item.avatar" alt="Avatar" class="avatar-image" />
-          </td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.phoneNumber }}</td>
-          <td>{{ item.address }}</td>
-          <td>
-            <select v-model="item.employed" :disabled="true">
-              <option :value="true">Yes</option>
-              <option :value="false">No</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <h3 class="fs-5 mb-4">Thêm Sản phẩm</h3>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <SelectComp v-model="selectedCate" :items="categories" itemTitle="category" itemValue="_id" name="category"
+                label="Loại sản phẩm" />
+            </div>
+            <InputComp v-model="newCategory" name="newCategory" label="Thêm Thể Loại" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary btn-block mb-4" @click="addNewCategory">Thêm mới</button>
+    </div>
+    
+    
   </div>
 </template>
 
-<style scoped>
-.avatar-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-</style>
-
 <script setup>
+import InputComp from '../../components/InputComp.vue';
+import SelectComp from '../../components/SelectComp.vue';
 import ApiService from "@/services/api.service";
 import { ref } from "vue";
 
-const data = ref([]);
+const selectedCate = ref(null);
+const newCategory = ref("");
+const categories = ref([]);
 
-async function fetchData() {
-  const response = await ApiService.get("/users/listUser");
-  data.value = response.data;
-  console.log(response.data);
-}
+const Getcategories = async () => {
+  try {
+    const response = await ApiService.get("/categories");
+    categories.value = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-fetchData();
+const addNewCategory = async () => {
+  try {
+    const response = await ApiService.post("/categories", { category: newCategory.value });
+    categories.value.push(response.data);
+    newCategory.value = ""; // Clear the input after adding
+    window.alert("Thêm thể loại thành công!");
+  } catch (error) {
+    console.log(error);
+    window.alert("Đã xảy ra lỗi khi thêm thể loại.");
+  }
+};
+
+
+Getcategories();
 </script>
