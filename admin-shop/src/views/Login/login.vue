@@ -1,40 +1,35 @@
 <template>
-  <div class="container-fluid">
-    <div class="wrap">
-      <form class="form">
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="form2Example1" class="form-control" v-model="email"/>
-          <label class="form-label" for="form2Example1">User name</label>
-        </div>
-
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="form2Example2" class="form-control" v-model="password" />
-          <label class="form-label" for="form2Example2">Password</label>
-        </div>
-
-        <!-- 2 column grid layout for inline styling -->
-        <div class="row mb-4">
-          <div class="col d-flex justify-content-center">
-            <!-- Checkbox -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-              <label class="form-check-label" for="form2Example31"> Remember me </label>
-            </div>
+  <div class="login-background">
+    <div class="container">
+      <div class="login-wrap">
+        <form class="login-form">
+          <!-- Email input -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" v-model="email" />
           </div>
-        </div>
 
-        <!-- Submit button -->
-        <div class="text-center">
-          <button type="button" class="btn btn-primary btn-block mb-4" @click="login">Sign in</button>
-        </div>
+          <!-- Password input -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" v-model="password" />
+          </div>
 
-        <!-- Register buttons -->
-        <div class="text-center">
-          <p>Not a member? <a href="#!">Register</a></p>
-        </div>
-      </form>
+          <!-- Remember me checkbox -->
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe" checked />
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+          </div>
+
+          <!-- Sign in button -->
+          <button type="button" class="btn btn-primary btn-block" @click="login">Sign in</button>
+
+          <!-- Register link -->
+          <div class="register-link">
+            <p>Not a member? <a href="#!">Register</a></p>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -44,18 +39,16 @@ import ApiService from "@/services/api.service";
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-
 import { ref } from 'vue';
 const email = ref('');
 const password = ref('');
-// const token = ref
+
 async function login() {
   try {
     const response = await ApiService.post("/auth/signIn", {
       account: email.value,
       password: password.value
     });
-
 
     if (response.status === 200) {
       const token = response.headers.authorization;
@@ -66,22 +59,61 @@ async function login() {
     console.error("Error during login:", error);
   }
 }
-
-    
-  
-
 </script>
-<style scope>
-.wrap {
-  width: 100%;
-  max-width: 500px;
+
+<style scoped>
+.login-background {
+  background-image: url('https://img3.thuthuatphanmem.vn/uploads/2019/10/14/banner-thoi-trang-dang-hien-dai-nhat_113856210.jpg');
+  background-size: cover;
+  background-position: center;
   min-height: 100vh;
   display: flex;
-  margin: 0 auto;
+  align-items: center;
 }
-.form {
-  width: 100%;
+
+.container {
+  max-width: 400px;
   margin: auto;
 }
 
+.login-wrap {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  color: #007bff;
+}
+
+.register-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
 </style>

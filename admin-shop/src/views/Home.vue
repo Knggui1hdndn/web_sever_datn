@@ -66,15 +66,20 @@
       </div>
       <div>
       
-  <div class="model-body">
+        <div class="model-body">
   <form>
     <h6>Ngày bắt đầu</h6>
-    <input type="datetime-local" class="from">
+    <input type="datetime-local" class="from" :value="startDate" @input="getStartChange">
   </form>
+  
   <form>
     <h6>Ngày kết thúc</h6>
-    <input type="datetime-local" class="from">
+    <input type="datetime-local" class="from" :value="endDate" @input="getEndChange">
   </form>
+  <div class>
+            <button type="button" class="btn btn-primary btn-block mb-4" @click="fetchData">Tìm kiếm </button>
+        </div>
+  
 </div>
       </div>
 
