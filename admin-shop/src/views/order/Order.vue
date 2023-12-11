@@ -14,8 +14,8 @@
         <h6>Số điện thoại</h6>
         <input type="tel" class="form" :value="phoneChange" @input="getPhoneChage">
       </form>
-      <div class>
-        <button type="button" class="btn btn-primary btn-block mb-4" @click="fetchData">Tìm kiếm </button>
+      <div class="button">
+        <button type="button" class="btn btn-primary btn-block" @click="fetchData">Tìm kiếm </button>
       </div>
 
     </div>
@@ -151,7 +151,9 @@ onMounted(()=>{
 }
 
 .model-body {
+  position: relative;
   display: flex;
+  align-items: center;
 }
 
 .model-body form {
@@ -159,7 +161,8 @@ onMounted(()=>{
   /* hoặc bất kỳ giá trị margin nào phù hợp */
 }
 
-.button-form {
+
+.button {
   margin-top: 20px;
-  /* Khoảng cách từ button đến form */
+  margin-bottom: 0px;
 }</style>
