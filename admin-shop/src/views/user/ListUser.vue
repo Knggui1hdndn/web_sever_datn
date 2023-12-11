@@ -24,9 +24,11 @@
           <td>{{ item.phoneNumber }}</td>
           <td>{{ item.address }}</td>
           <td>
-            <select name="emp" :disabled="true">
-              <option>{{ item.employed ? 'Yes' : 'No' }}</option>
+            <select v-model="item.status">
+              <option value="true">Hoạt Động bình thường</option>
+              <option value="false">Tạm thời bị khóa</option>
             </select>
+            <button @click="() => confirm(item._id, item.status)">Confirm</button>
           </td>
         </tr>
       </tbody>
@@ -47,12 +49,25 @@
 import ApiService from "@/services/api.service";
 import { ref } from "vue";
 
-const data = ref([]);
+const data = ref({});
+
+const confirm = async (_id, status) => {
+  try {
+    const response = await ApiService.put(`/users?idUser=${_id}`, { status });
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error confirming user:', error);
+  }
+};
 
 async function fetchData() {
-  const response = await ApiService.get("/users/listUser");
-  data.value = response.data;
-  console.log(response.data);
+  try {
+    const response = await ApiService.get("/users/listUser");
+    data.value = response.data;
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 }
 
 fetchData();

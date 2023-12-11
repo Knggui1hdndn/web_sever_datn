@@ -2,6 +2,7 @@
   <div class="p-3">
     <h3 class="fs-5 mb-4">Danh sách sản phẩm</h3>
     <div class="row-container">
+      <div class="cha">
       <div class="pro">
   <RouterLink to="/products/add" class="nav-link">
     <span>Thêm sản phẩm</span>
@@ -12,6 +13,7 @@
     <span>Thêm thể loại</span>
   </RouterLink>
   </div>
+</div>
 
 </div>
 
@@ -149,7 +151,13 @@ onMounted(() => {
     display: flex;
     justify-content:center;
   }
-
+.cha{
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  align-items: center;
+  padding: 7px 0px;
+}
   .pro {
     margin-right: 10px; 
   }
@@ -199,7 +207,8 @@ onMounted(() => {
   }
   .pagination ul li{
     cursor: pointer;
-    background-color: #28a745;
+    color: white;
+    background-color: #09cd3d;
     padding: 5px 10px;
     list-style: none;
     margin-right: 5px;

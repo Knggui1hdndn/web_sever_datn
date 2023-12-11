@@ -7,13 +7,13 @@
                     <InputComp v-model="product.name" name="name" label="Tên sản phẩm" :rules="notBlank" />
                 </div>
                 <div class="col-12 col-md-6">
-                    <InputComp v-model="product.price" name="price" label="Giá" :rules="notBlank" />
+                    <InputComp v-model="product.price" name="price" label="Giá" :rules="priceRules" />
                 </div>
                 <div class="col-12 col-md-6">
                     <InputComp v-model="product.description" name="description" label="Mô tả" :rules="notBlank" />
                 </div>
                 <div class="col-12 col-md-6">
-                    <InputComp v-model="product.sale" name="sale" label="Giảm giá" :rules="notBlank" />
+                    <InputComp v-model="product.sale" name="sale" label="Giảm giá" :rules="saleRules" />
                 </div>
                 <div class="col-12 col-md-6">
                     <SelectComp v-model="selectedCate" :items="categories" itemTitle="category" itemValue="_id"
@@ -33,6 +33,9 @@
         <div class="text-center">
             <button type="button" class="btn btn-primary btn-block mb-4" @click="AddProduct">Thêm mới</button>
         </div>
+        <div class="alert alert-success" v-if="successMessage">
+        {{ successMessage }}
+    </div>
     </div>
 </template>
   
@@ -42,7 +45,7 @@ import InputComp from '../../components/InputComp.vue';
 import SelectComp from '../../components/SelectComp.vue';
 import ApiService from "@/services/api.service";
 import { ref, } from "vue";
-
+const successMessage = ref(null);
 const product = ref({
     name: "",
     price: "",
@@ -53,6 +56,15 @@ const selectedCate = ref(null)
 
 const notBlank = [
     (v) => !!v || "Không được để trống"
+];
+const priceRules = [
+    (v) => !!v || "Không được để trống",
+    (v) => !isNaN(parseFloat(v)) && v > 0 || "Giá phải là một số lớn hơn 0",
+];
+
+const saleRules = [
+    (v) => !!v || "Không được để trống",
+    (v) => !isNaN(parseFloat(v)) && v >= 0 || "Giảm giá phải là một số không âm",
 ];
 
 const categories = ref([])
@@ -101,6 +113,7 @@ const AddProduct = async () => {
                 }
             })
             console.log(upload);
+            successMessage.value = "Thêm sản phẩm thành công!";
 
    
 
