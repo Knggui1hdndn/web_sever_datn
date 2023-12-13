@@ -13,7 +13,18 @@
     <span>Thêm thể loại</span>
   </RouterLink>
   </div>
+  
 </div>
+<div class="model-body">
+      <form>
+        <h6>Tên người dùng </h6>
+        <input type="tel" class="form" :value="namepro" @input="getName">
+      </form>
+      <div class="button">
+        <button type="button" class="btn btn-primary btn-block" @click="searchProduct">Tìm kiếm </button>
+      </div>
+
+    </div>
 
 </div>
 
@@ -76,6 +87,13 @@
 <script setup>
 import ApiService from "@/services/api.service";
 import { ref,onMounted } from "vue";
+const namepro = ref('');
+
+let nameproduct = "";
+const getName = (event) => {
+  nameproduct = event.target.value;
+  console.log(nameproduct)
+}
 const data = ref([])
 const totalPage = ref(0);
 const perPage = ref(5);
@@ -115,9 +133,15 @@ const count = async (id)=>{
     console.log(err)
   }
 }
+async function searchProduct() {
+  const response = await ApiService.get(`/products/search?name=${nameproduct}`);
+  data.value = response.data;
+  console.log(response.data);
+}
 onMounted(() => {
     fetchData();
     getAll();
+
 });
 </script>
 
@@ -214,4 +238,20 @@ onMounted(() => {
     margin-right: 5px;
     margin-left: 5px;
   }
+  .model-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.model-body form {
+  margin-right: 20px;
+  /* hoặc bất kỳ giá trị margin nào phù hợp */
+}
+
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
 </style>

@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col">
             <div class="card text-bg-primary">
-              
+
               <div class="card-body">
                 <h5 class="card-title">Số lượng sản phẩm</h5>
                 <div class="col-12 col-md-6">
@@ -53,6 +53,27 @@
                 <div class="card-body">
                   <h5 class="card-title">Tiêu Đề 3</h5>
                   <p class="card-text">{{ dataTop3 }}</p>
+                  <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card text-bg-primary">
+
+              <div class="card-body">
+                <h5 class="card-title">Số lượng sản phẩm</h5>
+                <div class="col-12 col-md-6">
+                  <p><strong></strong> {{ thongke.countAllSp }}</p>
+        </div>
+                <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card text-bg-success">
+                <div class="card-body">
+                  <h5 class="card-title">sản phẩm đã bán</h5>
+                  <p class="card-text">{{ thongke.countProductSold }}</p>
                   <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
@@ -99,7 +120,7 @@
         
           <td>{{ top5Pro.price }}</td>
           <td>{{ top5Pro.sold }}</td>
-          <td>{{ top5Pro.sale }}</td>
+          <td>{{ top5Pro.idCata }}</td>
         </tr>
 
       </tbody>
@@ -164,6 +185,7 @@ const GetAll = async () => {
     console.log(error);
   }
 };
+GetAll();
 
 const getToDate = async()=>{
   try {
@@ -178,7 +200,7 @@ const getToDate = async()=>{
 }
 onMounted(()=>{
  
- GetAll();
+
 })
 
 </script>

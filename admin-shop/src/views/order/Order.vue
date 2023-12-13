@@ -14,6 +14,10 @@
         <h6>Số điện thoại</h6>
         <input type="tel" class="form" :value="phoneChange" @input="getPhoneChage">
       </form>
+      <form>
+        <h6>Mã Vận Đơn</h6>
+        <input type="tel" class="form" :value="ladingChange" @input="getLading">
+      </form>
       <div class="button">
         <button type="button" class="btn btn-primary btn-block" @click="fetchData">Tìm kiếm </button>
       </div>
@@ -33,7 +37,8 @@
           <th scope="col">Mô tả đơn hàng</th>
           <th scope="col">Trạng thái Thanh Toán</th>
           <th scope="col">Tổng giá tiền</th>
-          <th scope="col">Mã đơn hàng </th>
+          <th scope="col">Mã vận đơn </th>
+          <th scope="col">Mã đơn hàng</th>
           <th scope="col">Trạng thái Đơn Hàng</th>
         </tr>
       </thead>
@@ -50,9 +55,12 @@
             {{ item.ladingCode }}
           </td>
           <td>
-            <select v-model="item.status">
-              <option value="Wait for confirmation">WAIT_FOR_CONFIRMATION</option>
-              <option value="Confirmed">CONFIRMED</option>
+            {{ item.codeOrders }}
+          </td>
+          <td>
+            <select v-model="item.status" :style="{ color: getStatusColor(item.status)}">
+              <option value="Wait for confirmation" >Đang chờ xác nhận</option>
+              <option value="Confirmed" >CONFIRMED</option>
               <option value="Delivering">DELIVERING</option>
               <option value="Delivered">DELIVERED</option>
               <option value="Cancel">CANCEL</option>
@@ -91,9 +99,11 @@ const data = ref([])
 const startDate = ref('');
 const endDate = ref('');
 const phoneChange = ref('');
+const ladingChange = ref('');
 let start_date = "";
 let end_date = "";
 let phone = "";
+let lading="";
 const getStartChange = (event) => {
   start_date = event.target.value.split('T')[0];
 }
@@ -104,12 +114,16 @@ const getPhoneChage = (event) => {
   phone = event.target.value;
   console.log(phone)
 }
+const getLading = (event)=>{
+  lading = event.target.value;
+  console.log(lading);
+}
 const confirm = async(id,status)=>{
   const response = await ApiService.put(`/order?idOrder=${id}&status=${status}`)
   console.log(response);
 }
 async function fetchData() {
-  const response = await ApiService.get(`/order/search?startDate=${start_date}&endDate=${end_date}&phoneNumber=${phone}`);
+  const response = await ApiService.get(`/order/search?startDate=${start_date}&endDate=${end_date}&phoneNumber=${phone}&ladingCode=${lading}`);
   data.value = response.data;
   console.log(response.data);
 }
@@ -117,6 +131,28 @@ onMounted(()=>{
  
   fetchData();
 })
+const getStatusColor = (status) => {
+  // Add your logic here to determine the color based on the status value
+  // Example logic: Assign different colors based on different status values
+  switch (status) {
+    case 'Wait for confirmation':
+      return 'blue';
+    case 'Confirmed':
+      return 'green';
+    case 'Delivering':
+      return 'orange';
+    case 'Delivered':
+      return 'purple';
+    case 'Cancel':
+      return 'red';
+    case 'Returns':
+      return 'brown';
+    case 'Hollow':
+      return 'gray';
+    default:
+      return ''; // Set a default color if none matches
+  }
+};
 </script>
 
 <style scoped>
