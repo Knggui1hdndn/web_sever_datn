@@ -1,5 +1,15 @@
 <template>
   <div class="p-3">
+    <div class="model-body">
+      <form>
+        <h6>Tên người dùng </h6>
+        <input type="tel" class="form" :value="nameChange" @input="getNamechange">
+      </form>
+      <div class="button">
+        <button type="button" class="btn btn-primary btn-block" @click="search">Tìm kiếm </button>
+      </div>
+
+    </div>
     <h3 class="fs-5 mb-4">Danh sách người dùng</h3>
     <table class="table table-striped table-bordered">
       <thead>
@@ -24,9 +34,11 @@
           <td>{{ item.phoneNumber }}</td>
           <td>{{ item.address }}</td>
           <td>
-            <select name="emp" :disabled="true">
-              <option>{{ item.employed ? 'Yes' : 'No' }}</option>
+            <select v-model="item.status">
+              <option value="true">Hoạt Động bình thường</option>
+              <option value="false">Tạm thời bị khóa</option>
             </select>
+            <button @click="() => confirm(item._id, item.status)">Confirm</button>
           </td>
         </tr>
       </tbody>
@@ -41,19 +53,62 @@
   border-radius: 50%;
   object-fit: cover;
 }
+.model-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.model-body form {
+  margin-right: 20px;
+  /* hoặc bất kỳ giá trị margin nào phù hợp */
+}
+
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
 </style>
 
 <script setup>
 import ApiService from "@/services/api.service";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
+const nameChange = ref('');
 
-const data = ref([]);
+let name = "";
+const getNamechange = (event) => {
+  name = event.target.value;
+  console.log(name)
+}
+const data = ref({});
+
+const confirm = async (_id, status) => {
+  try {
+    const response = await ApiService.put(`/users?idUser=${_id}`, { status });
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error confirming user:', error);
+  }
+};
 
 async function fetchData() {
-  const response = await ApiService.get("/users/listUser");
+  try {
+    const response = await ApiService.get("/users/listUser");
+    data.value = response.data;
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+async function search() {
+  const response = await ApiService.get(`/users?name=${name}`);
   data.value = response.data;
   console.log(response.data);
 }
-
 fetchData();
+onMounted(()=>{
+ 
+ search();
+})
 </script>
