@@ -23,9 +23,9 @@
             <div class="card text-bg-primary">
 
               <div class="card-body">
-                <h5 class="card-title">Số lượng sản phẩm</h5>
+                <h5 class="card-title">Số  sản phẩm Mới</h5>
                 <div class="col-12 col-md-6">
-                  <p><strong></strong> {{ thongke.countAllSp }}</p>
+                  <p><strong></strong> {{ thongke.countProductNew }}</p>
         </div>
                 <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
               </div>
@@ -33,8 +33,8 @@
             <div class="col">
               <div class="card text-bg-success">
                 <div class="card-body">
-                  <h5 class="card-title">Số Lượng sản phẩm đã bán</h5>
-                  <p class="card-text">{{ thongke.countProductSold }}</p>
+                  <h5 class="card-title">Đơn hàng đang chờ xác nhận</h5>
+                  <p class="card-text">{{ thongke.countWaitForConfirmation }}</p>
                   <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
@@ -51,8 +51,8 @@
             <div class="col">
               <div class="card text-bg-success">
                 <div class="card-body">
-                  <h5 class="card-title">Tiêu Đề 3</h5>
-                  <p class="card-text">{{ dataTop3 }}</p>
+                  <h5 class="card-title"> Đơn hàng đã xác nhận </h5>
+                  <p class="card-text">{{ thongke.countConfirmed }}</p>
                   <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
@@ -62,9 +62,9 @@
             <div class="card text-bg-primary">
 
               <div class="card-body">
-                <h5 class="card-title">Số lượng sản phẩm</h5>
+                <h5 class="card-title">Đơn giao thành công</h5>
                 <div class="col-12 col-md-6">
-                  <p><strong></strong> {{ thongke.countAllSp }}</p>
+                  <p><strong></strong> {{ thongke.countDelivered }}</p>
         </div>
                 <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
               </div>
@@ -72,8 +72,8 @@
             <div class="col">
               <div class="card text-bg-success">
                 <div class="card-body">
-                  <h5 class="card-title">sản phẩm đã bán</h5>
-                  <p class="card-text">{{ thongke.countProductSold }}</p>
+                  <h5 class="card-title">Đơn hàng đang  được giao</h5>
+                  <p class="card-text">{{ thongke.countDelivering }}</p>
                   <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
@@ -82,8 +82,8 @@
           <div class="col">
             <div class="card text-bg-success">
               <div class="card-body">
-                <h5 class="card-title">Số lượng đơn hàng</h5>
-                <p class="card-text">{{ thongke.countOrderNew }}</p>
+                <h5 class="card-title"> Đơn hàng bị hủy </h5>
+                <p class="card-text">{{ thongke.countCancel }}</p>
                 <a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a>
               </div>
             </div>

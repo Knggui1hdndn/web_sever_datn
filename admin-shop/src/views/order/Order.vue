@@ -37,7 +37,6 @@
           <th scope="col">Mô tả đơn hàng</th>
           <th scope="col">Trạng thái Thanh Toán</th>
           <th scope="col">Tổng giá tiền</th>
-          <th scope="col">Mã vận đơn </th>
           <th scope="col">Mã đơn hàng</th>
           <th scope="col">Trạng thái Đơn Hàng</th>
         </tr>
@@ -58,17 +57,16 @@
             {{ item.codeOrders }}
           </td>
           <td>
-            <select v-model="item.status" :style="{ color: getStatusColor(item.status)}">
-              <option value="Wait for confirmation" >Đang chờ xác nhận</option>
-              <option value="Confirmed" >CONFIRMED</option>
-              <option value="Delivering">DELIVERING</option>
-              <option value="Delivered">DELIVERED</option>
-              <option value="Cancel">CANCEL</option>
-              <option value="Returns">RETURNS</option>
-              <option value="Hollow">HOLLOW</option>
-            </select>
-            <button @click="confirm(item._id,item.status)">Confirm</button>
-          </td>
+    <select v-model="item.status" :style="{ color: getStatusColor(item.status)}">
+      <option value="Chờ xác nhận" :disabled="item.status !== 'Chờ xác nhận'">Đang chờ xác nhận</option>
+      <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">Đã xác nhận</option>
+      <option value="Đang giao hàng" :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
+      <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">Giao Hàng thành công</option>
+      <option value="Hủy" :disabled="true">Hủy Bỏ</option>
+      <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng' && item.status !== 'Hủy'">Trả Hàng</option>
+    </select>
+    <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Đã giao hàng' || item.status === 'Hủy'">Confirm</button>
+  </td>
           <td class="">
 
             <RouterLink :to="`orders/${item._id}/details`" class="nav-link"><span class="action-icon"><font-awesome-icon
@@ -132,8 +130,6 @@ onMounted(()=>{
   fetchData();
 })
 const getStatusColor = (status) => {
-  // Add your logic here to determine the color based on the status value
-  // Example logic: Assign different colors based on different status values
   switch (status) {
     case 'Wait for confirmation':
       return 'blue';
@@ -150,7 +146,7 @@ const getStatusColor = (status) => {
     case 'Hollow':
       return 'gray';
     default:
-      return ''; // Set a default color if none matches
+      return ''; 
   }
 };
 </script>
@@ -182,9 +178,7 @@ const getStatusColor = (status) => {
   color: #3267e4;
 }
 
-.icon.delete {
-  color: #FF4C51;
-}
+
 
 .model-body {
   position: relative;

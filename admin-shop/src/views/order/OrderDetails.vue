@@ -49,13 +49,8 @@
       </tbody>
     </table>
   </div>
-  <h5>Cập nhật mã đơn hàng </h5>
-    <InputComp v-model="lading.ladingCode" name="name" label="Mã đơn hàng" :rules="notBlank" />
-    <div class="button-form">
-      <button type="button" class="btn btn-secondary mb-2" @click="updateOrderCode">
-        <font-awesome-icon icon="fas fa-edit" class="icon edit" /> Cập nhật
-      </button>
-    </div>
+  
+    
   
 </template>
 
