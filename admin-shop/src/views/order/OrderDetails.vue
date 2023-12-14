@@ -66,9 +66,7 @@ const notBlank = [
 
 const route = useRoute();
 const { id } = route.params;
-let lading = ref({
-  ladingCode: ""
-});
+
 
 const data = ref({});
 
@@ -82,18 +80,7 @@ async function fetchData() {
   }
 }
 
-const updateOrderCode = async () => {
-  try {
-    const response = await ApiService.put(`/order/ladingCode/${id}`, {
-      ladingCode: lading.value.ladingCode,
-    });
-    console.log(response);
-    // Optionally, you can fetch updated data after the update
-    fetchData();
-  } catch (error) {
-    console.error('Error updating order code:', error);
-  }
-};
+
 
 fetchData();
 </script>
