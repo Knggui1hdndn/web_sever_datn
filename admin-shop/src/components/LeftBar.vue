@@ -20,7 +20,7 @@
 
     <div class="d-flex align-items-center py-2 pe-2 nav-wrap">
       <font-awesome-icon icon="fa-solid fa-sign-out" class="icon"/>
-      <RouterLink to="/login" class="nav-link">Logout</RouterLink>
+      <RouterLink to="/login" class="nav-link">Đăng xuất</RouterLink>
     </div>
 
   </nav>
