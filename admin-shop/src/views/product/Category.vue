@@ -8,7 +8,7 @@
       <div class=" col-12 col-md2">
         <InputComp v-model="newCategory" name="newCategory" label="Thêm Thể Loại" />
         <div class="text-center">
-          <button type="button" class="btn btn-primary btn-block mb-4" @click="addNewCategory">Update</button>
+          <button type="button" class="btn btn-primary btn-block mb-4" @click="addNewCategory">Thêm thể loại </button>
         </div>
       </div>
       <div class="row">
@@ -98,10 +98,10 @@ const confirm = async (id, status) => {
     const response = await ApiService.put(`/categories/visibility?idCategory=${id}`, {
       status: status,
       id: id
+    });
 
-    }
-    );
-    Window.arler("cập nhật trạng thái thành công !")
+    // Fix the typo here
+    window.alert("Cập nhật trạng thái thành công!");
 
     // Kiểm tra nếu cập nhật thành công
     if (response.status === 200) {
@@ -111,14 +111,25 @@ const confirm = async (id, status) => {
     }
   } catch (error) {
     console.error('Lỗi khi cập nhật trạng thái:', error);
-
   }
 };
 const UpdateCategory = async (id, category) => {
-  const response = await ApiService.put(`/categories/updateCategories/${id}`, {
-    category: category
-  })
-  console.log(response);
-}
+  try {
+    const response = await ApiService.put(`/categories/updateCategories/${id}`, {
+      category: category
+    });
+
+    // Check if the update was successful
+    if (response.status === 200) {
+      window.alert('Cập nhật thể loại thành công!');
+    } else {
+      window.alert('Cập nhật thể loại không thành công!');
+    }
+
+    console.log(response);
+  } catch (error) {
+    console.error('Lỗi khi cập nhật thể loại:', error);
+  }
+};
 Getcategories();
 </script>

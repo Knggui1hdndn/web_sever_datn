@@ -51,10 +51,24 @@
               <div class="product-image">
                 <img :src="imageProductQuantity.imageProduct.image" alt="">
               </div>
+              <div class="row" >                
+                      <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
+                          @change="(e) => handleFileUpload(e)" />
+                        <img :src="previewImage">
+              </div>
+            <div>
+            </div>
+             
               <button type="button" class="btn btn-primary ms-2"
-                @click="UpdateProductQuantity(imageProductQuantity._id, imageProductQuantity.quantity, imageProductQuantity._id)">
+                @click="UpdateProductQuantity(imageProductQuantity._id,imageProductQuantity.quantity,imageProductQuantity._id)">
                 <font-awesome-icon icon="fa-solid fa-repeat" class="icon delete" />
               </button>
+              <button type="button" class = "btn btn-primary ms-2"
+              @click="updateImage(imageProductQuantity.imageProduct._id, imageProductQuantity.imageProduct.color ,imageProductQuantity.imageProduct.image)">
+              <font-awesome-icon icon = "rotate-right" />
+              </button>
+
+            
             </div>
           </div>
         </div>
@@ -132,6 +146,9 @@ let product = ref({
   description: "",
   idCata: "",
 })
+const getOnchangeImage = (event)=>{
+  console.log
+}
 async function fetchData() {
   const response = await ApiService.get("/products/details/" + id);
   product.value = response.data;
@@ -156,6 +173,7 @@ const UpdateProduct = async () => {
     idCata: product.value.idCata._id,
     id: id,
   })
+  window.alert("Cập nhật chi tiết sản phẩm thành công!");
   console.log(response);
 }
 
@@ -164,6 +182,8 @@ const UpdateProductDetail = async (id, size) => {
     idProductDetail: id,
     size: size
   })
+  window.alert("cập nhật Size thành công");
+
   console.log(response);
 }
 
@@ -173,6 +193,7 @@ const UpdateProductQuantity = async (id, quantity, image) => {
     quantity: quantity,
     image: image
   })
+  window.alert("cập nhật số lượng sản phẩm thành công");
   console.log(response);
 }
 
@@ -201,6 +222,48 @@ const deletecmt = async (id) => {
   }
 };
 Comment();
+const file = ref("")
+let previewImage = "";
+const handleFileUpload = (event)=> {
+    let selectedFile = ""
+    selectedFile = event.target.files[0];
+    if(selectedFile !== ""){
+      file.value = selectedFile
+      console.log(file.value);
+      encodeImage(file.value);
+    }
+}
+const encodeImage = (file)=> {
+    const reader = new FileReader();
+    reader.onload = () => {
+        const base64Image = reader.result.split(",")[1];
+        previewImage = "data:image/jpeg;base64," + base64Image
+    };
+    reader.readAsDataURL(file);
+}
+const imageProduct = ref(null);
+
+const updateImage= async(id,color,image) =>{
+    try {
+      var formData = new FormData();
+      var imagefile = document.querySelector('#file');
+      formData.append("image", file.value ? file.value:image);
+      formData.append("color", color);
+        const response = await ApiService.put(`/products/image/${id}`,formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        imageProduct.value = response.data._id;
+
+        // Use window.alert instead of Vue alert
+        window.alert("Cập nhật ảnh , màu sắc thành công!");
+    } catch (error) {
+        console.log(error);
+        window.alert("Đã xảy ra lỗi khi thêm màu sắc.");
+    }
+}
 
 </script>
 
