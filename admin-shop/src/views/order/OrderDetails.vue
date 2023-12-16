@@ -49,13 +49,8 @@
       </tbody>
     </table>
   </div>
-  <h5>Cập nhật mã đơn hàng </h5>
-    <InputComp v-model="lading.ladingCode" name="name" label="Mã đơn hàng" :rules="notBlank" />
-    <div class="button-form">
-      <button type="button" class="btn btn-secondary mb-2" @click="updateOrderCode">
-        <font-awesome-icon icon="fas fa-edit" class="icon edit" /> Cập nhật
-      </button>
-    </div>
+  
+    
   
 </template>
 
@@ -71,9 +66,7 @@ const notBlank = [
 
 const route = useRoute();
 const { id } = route.params;
-let lading = ref({
-  ladingCode: ""
-});
+
 
 const data = ref({});
 
@@ -87,18 +80,7 @@ async function fetchData() {
   }
 }
 
-const updateOrderCode = async () => {
-  try {
-    const response = await ApiService.put(`/order/ladingCode/${id}`, {
-      ladingCode: lading.value.ladingCode,
-    });
-    console.log(response);
-    // Optionally, you can fetch updated data after the update
-    fetchData();
-  } catch (error) {
-    console.error('Error updating order code:', error);
-  }
-};
+
 
 fetchData();
 </script>

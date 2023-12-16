@@ -34,8 +34,8 @@
 import InputComp from '../../components/InputComp.vue';
 import SelectComp from '../../components/SelectComp.vue';
 import ApiService from "@/services/api.service";
-import { ref, } from "vue";
-import { useRoute } from 'vue-router'
+import { ref } from "vue";
+import { useRoute } from 'vue-router';
 
 const product = ref({
     size: "",
@@ -48,8 +48,8 @@ const { id } = route.params;
 const notBlank = [
     (v) => !!v || "Không được để trống"
 ];
-// upload image
-const file = ref(null)
+
+const file = ref(null);
 let previewImage = "";
 const handleFileUpload = (event)=> {
     file.value = event.target.files[0];
@@ -60,44 +60,64 @@ const encodeImage = (file)=> {
     const reader = new FileReader();
     reader.onload = () => {
         const base64Image = reader.result.split(",")[1];
-        previewImage = "data:image/jpeg;base64," + base64Image
+        previewImage = "data:image/jpeg;base64," + base64Image;
     };
     reader.readAsDataURL(file);
 }
 const idProductImage = ref(null);
+
 const addColor = async () => {
     var formData = new FormData();
     var imagefile = document.querySelector('#file');
     formData.append("image", file.value);
     formData.append("color", product.value.color);
-    const response = await ApiService.post("/products/image/"+id, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-    idProductImage.value = response.data._id;
+
+    try {
+        const response = await ApiService.post("/products/image/"+id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        idProductImage.value = response.data._id;
+
+        // Use window.alert instead of Vue alert
+        window.alert("Thêm màu sắc thành công!");
+    } catch (error) {
+        console.log(error);
+        window.alert("Đã xảy ra lỗi khi thêm màu sắc.");
+    }
 }
+
 const addSize = async () => {
     try {
         const response = await ApiService.post("products/details/"+id, {
             size: product.value.size,
         });
+        
         console.log(response);
+        
         if (response.status == 201 || response.status == 200) {
             const responseQuatity = await ApiService.post("products/productQuantity/"+response.data._id, {
                 idProductDetail: response.data._id,
                 imageProduct: idProductImage.value,
                 quantity: product.value.quantity
-            })
+            });
+
             console.log(responseQuatity);
+
+            window.alert("Thêm size thành công!");
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+
+        // Use window.alert instead of Vue alert
+        window.alert("Đã xảy ra lỗi khi thêm size.");
     }
 } 
+
 const add = async () => {
     await addColor();
     await addSize();
 }
 </script>
-  

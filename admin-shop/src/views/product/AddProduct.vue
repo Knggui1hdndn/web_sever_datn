@@ -107,20 +107,18 @@ const AddProduct = async () => {
             var formData = new FormData();
             var imagefile = document.querySelector('#file');
             formData.append("image", file.value);
-            const upload =ApiService.post("/products/image/" + response.data._id, formData, {
+            const upload = ApiService.post("/products/image/" + response.data._id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            })
-            console.log(upload);
-            successMessage.value = "Thêm sản phẩm thành công!";
+            });
 
-   
+            // Change successMessage to window.alert
+            window.alert("Thêm sản phẩm thành công!");
 
         }
     } catch (error) {
-        console.log(error)
-
+        console.log(error);
     }
 }
 

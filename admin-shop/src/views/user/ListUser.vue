@@ -75,6 +75,8 @@
 import ApiService from "@/services/api.service";
 import { ref,onMounted } from "vue";
 const nameChange = ref('');
+import { useRoute } from 'vue-router'
+
 
 let name = "";
 const getNamechange = (event) => {
@@ -87,6 +89,7 @@ const confirm = async (_id, status) => {
   try {
     const response = await ApiService.put(`/users?idUser=${_id}`, { status });
     console.log(response.data);
+    window.alert("Cập nhật trạng thái thành công !");
   } catch (error) {
     console.error('Error confirming user:', error);
   }
