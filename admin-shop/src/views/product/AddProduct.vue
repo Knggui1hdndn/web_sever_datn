@@ -113,7 +113,6 @@ const AddProduct = async () => {
                 }
             });
 
-            // Change successMessage to window.alert
             window.alert("Thêm sản phẩm thành công!");
 
         }

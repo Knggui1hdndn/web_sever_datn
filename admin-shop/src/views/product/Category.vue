@@ -119,7 +119,6 @@ const UpdateCategory = async (id, category) => {
       category: category
     });
 
-    // Check if the update was successful
     if (response.status === 200) {
       window.alert('Cập nhật thể loại thành công!');
     } else {

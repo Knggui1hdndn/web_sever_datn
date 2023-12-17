@@ -81,7 +81,6 @@ const addColor = async () => {
         
         idProductImage.value = response.data._id;
 
-        // Use window.alert instead of Vue alert
         window.alert("Thêm màu sắc thành công!");
     } catch (error) {
         console.log(error);
@@ -111,7 +110,6 @@ const addSize = async () => {
     } catch (error) {
         console.log(error);
 
-        // Use window.alert instead of Vue alert
         window.alert("Đã xảy ra lỗi khi thêm size.");
     }
 } 

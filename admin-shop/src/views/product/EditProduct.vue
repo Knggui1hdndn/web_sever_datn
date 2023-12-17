@@ -257,7 +257,7 @@ const updateImage= async(id,color,image) =>{
         
         imageProduct.value = response.data._id;
 
-        // Use window.alert instead of Vue alert
+        
         window.alert("Cập nhật ảnh , màu sắc thành công!");
     } catch (error) {
         console.log(error);
