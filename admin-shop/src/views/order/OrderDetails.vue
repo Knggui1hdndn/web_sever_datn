@@ -3,17 +3,18 @@
   <div class="p-3">
     <h3 class="fs-5 mb-4">Chi tiết đơn hàng</h3>
     <div>
-      <strong>Name:</strong> {{ data.name }}<br>
-      <strong>Address:</strong> {{ data.address }}<br>
-      <strong>Phone Number:</strong> {{ data.phoneNumber }}<br>
+      <strong>Tên người đặt Hàng :</strong> {{ data.name }}<br>
+      <strong>Địa chỉ :</strong> {{ data.address }}<br>
+      <strong>Số điện thoại :</strong> {{ data.phoneNumber }}<br>
     </div>
 
     <div>
-      <strong>Description:</strong> {{ data.description }}<br>
-      <strong>Total Amount:</strong> {{ data.totalAmount }}<br>
-      <strong>Is Pay:</strong> {{ data.isPay ? 'Paid' : 'Not Paid' }}<br>
-      <strong>Payments:</strong> {{ data.payments }}<br>
-      <strong>Status:</strong> {{ data.status }}<br>
+      <strong>Mô tả :</strong> {{ data.description }}<br>
+      <strong>Tổng tiền:</strong> {{ data.totalAmount }}<br>
+      <strong>Trạng thái thanh toán :</strong> {{ data.isPay ? 'Đã Thanh toán' : 'Chưa thanh toán' }}<br>
+      <strong>Phương thức thanh toán :</strong> {{ data.payments }}<br>
+      <strong>Trạng thái đơn hàng  :</strong> {{ data.status }}<br>
+      <strong>Mã đơn hàng :</strong>   {{ data.codeOrders }}<br>
     </div>
 
     <table class="table table-striped table-bordered">
@@ -26,7 +27,7 @@
           <th scope="col">Size</th>
           <th scope="col">Số lượng</th>
           <th scope="col">Giá tiền</th>
-          <th scope="col">Sale</th>
+          <th scope="col">Giảm giá </th>
           <th scope="col">Thành tiền</th>
          
         </tr>

@@ -15,7 +15,7 @@
         <input type="tel" class="form" :value="phoneChange" @input="getPhoneChage">
       </form>
       <form>
-        <h6>Mã Vận Đơn</h6>
+        <h6>Mã Đơn Hàng </h6>
         <input type="text" class="form" :value="ladingChange" @input="getLading">
       </form>
       <div class="button">
@@ -50,23 +50,24 @@
           <td>{{ item.description }}</td>
           <td>{{ item.isPay }}</td>
           <td>{{ item.totalAmount }}</td>
-          <td>
-            {{ item.ladingCode }}
-          </td>
+
           <td>
             {{ item.codeOrders }}
           </td>
           <td>
-    <select v-model="item.status" :style="{ color: getStatusColor(item.status)}">
-      <option value="Chờ xác nhận" :disabled="item.status !== 'Chờ xác nhận'">Đang chờ xác nhận</option>
-      <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận'">Đã xác nhận</option>
-      <option value="Đang giao hàng" :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
-      <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">Giao Hàng thành công</option>
-      <option value="Hủy" :disabled="true">Hủy Bỏ</option>
-      <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng' && item.status !== 'Hủy'">Trả Hàng</option>
-    </select>
-    <button @click="confirm(item._id, item.status)" :disabled="item.status ==='Hủy'">Confirm</button>
-  </td>
+            <select v-model="item.status" :style="{ color: getStatusColor(item.status) }">
+              <option value="Chờ xác nhận" :disabled="item.status !== 'Chờ xác nhận'">Đang chờ xác nhận</option>
+              <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận'">Đã
+                xác nhận</option>
+              <option value="Đang giao hàng"
+                :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
+              <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">
+                Giao Hàng thành công</option>
+              <option value="Hủy" :disabled="true">Hủy Bỏ</option>
+              <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
+            </select>
+            <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+          </td>
           <td class="">
 
             <RouterLink :to="`orders/${item._id}/details`" class="nav-link"><span class="action-icon"><font-awesome-icon
@@ -92,7 +93,7 @@
 
 <script setup>
 import ApiService from "@/services/api.service";
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 const data = ref([])
 const startDate = ref('');
 const endDate = ref('');
@@ -101,7 +102,7 @@ const ladingChange = ref('');
 let start_date = "";
 let end_date = "";
 let phone = "";
-let lading="";
+let lading = "";
 const getStartChange = (event) => {
   start_date = event.target.value.split('T')[0];
 }
@@ -112,41 +113,40 @@ const getPhoneChage = (event) => {
   phone = event.target.value;
   console.log(phone)
 }
-const getLading = (event)=>{
+const getLading = (event) => {
   lading = event.target.value;
   console.log(lading);
 }
-const confirm = async(id,status)=>{
+const confirm = async (id, status) => {
   const response = await ApiService.put(`/order?idOrder=${id}&status=${status}`)
   console.log(response);
+  window.alert("Thay đổi trạng thái đơn hàng thành công")
 }
 async function fetchData() {
   const response = await ApiService.get(`/order/search?startDate=${start_date}&endDate=${end_date}&phoneNumber=${phone}&orderCode=${lading}`);
   data.value = response.data;
   console.log(response.data);
 }
-onMounted(()=>{
- 
+onMounted(() => {
+
   fetchData();
 })
 const getStatusColor = (status) => {
   switch (status) {
-    case 'Wait for confirmation':
+    case 'Chờ xác nhận':
       return 'blue';
-    case 'Confirmed':
+    case 'Đã xác nhận':
       return 'green';
-    case 'Delivering':
+    case 'Đang giao hàng':
       return 'orange';
-    case 'Delivered':
+    case 'Đã giao hàng':
       return 'purple';
-    case 'Cancel':
+    case 'Hủy':
       return 'red';
-    case 'Returns':
+    case 'Trả Hàng':
       return 'brown';
-    case 'Hollow':
-      return 'gray';
     default:
-      return ''; 
+      return '';
   }
 };
 </script>
@@ -159,7 +159,6 @@ const getStatusColor = (status) => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  /* background-color: #ddd; */
   font-size: 20px;
   margin: 0 4px;
   cursor: pointer;

@@ -51,20 +51,21 @@
               <div class="product-image">
                 <img :src="imageProductQuantity.imageProduct.image" alt="">
               </div>
-              <div class="row" >                
+              <div class="avatar-container" >                
                       <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
                           @change="(e) => handleFileUpload(e)" />
-                        <img :src="previewImage">
+                        <img :src="previewImage"   >
               </div>
+             
             <div>
             </div>
-             
+           
               <button type="button" class="btn btn-primary ms-2"
                 @click="UpdateProductQuantity(imageProductQuantity._id,imageProductQuantity.quantity,imageProductQuantity._id)">
                 <font-awesome-icon icon="fa-solid fa-repeat" class="icon delete" />
               </button>
               <button type="button" class = "btn btn-primary ms-2"
-              @click="updateImage(imageProductQuantity.imageProduct._id, imageProductQuantity.imageProduct.color ,imageProductQuantity.imageProduct.image)">
+              @click="updateImage(imageProductQuantity.imageProduct._id, imageProductQuantity.imageProduct.color ,imageProductQuantity.imageProduct.image, imageProductQuantity.imageProduct._id)">
               <font-awesome-icon icon = "rotate-right" />
               </button>
 
@@ -80,8 +81,8 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Avatar</th>
-              <th scope="col">Name</th>
-              <th scope="col">Comment </th>
+              <th scope="col">Tên người dùng</th>
+              <th scope="col">Bình Luận </th>
               <th scope="col">Đánh giá sao </th>
               <th scope="col">Hành động</th>
 
@@ -92,8 +93,10 @@
   <tr v-for="(cmt, index) in data" :key="cmt.id">
     <th scope="row">{{ ++index }}</th>
     <td>
-      <img :src="cmt.avatar" alt="Avatar" class="avatar-image" />
-    </td>
+  <div class="avatar-container">
+    <img :src="cmt.avatar" alt="Avatar" class="avatar-image" />
+  </div>
+</td>
     <td>{{ cmt.name }}</td>
     <td>{{ cmt.comment }}</td>
     <td>{{ cmt.star }}</td>
@@ -105,7 +108,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa sản phẩm</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Bình luận</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -257,7 +260,7 @@ const updateImage= async(id,color,image) =>{
         
         imageProduct.value = response.data._id;
 
-        // Use window.alert instead of Vue alert
+        
         window.alert("Cập nhật ảnh , màu sắc thành công!");
     } catch (error) {
         console.log(error);
@@ -296,4 +299,11 @@ const updateImage= async(id,color,image) =>{
   width: 100%;
   height: 100%;
   object-fit: cover;
-}</style>
+}
+.avatar-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+</style>
