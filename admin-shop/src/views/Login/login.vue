@@ -3,13 +3,11 @@
     <div class="container">
       <div class="login-wrap">
         <form class="login-form">
-          <!-- Email input -->
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email/Phone Number</label>
             <input type="email" id="email" class="form-control" v-model="email" />
           </div>
 
-          <!-- Password input -->
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" class="form-control" v-model="password" />
@@ -45,7 +43,7 @@ const password = ref('');
 const message = ref('');
 async function login() {
   try {
-    const response = await ApiService.post("/auth/signIn", {
+    const response = await ApiService.post("/auth/signIn?roleType=ADMIN", {
       account: email.value,
       password: password.value
     });
