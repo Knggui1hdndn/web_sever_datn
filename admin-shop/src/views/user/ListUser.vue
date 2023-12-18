@@ -20,7 +20,7 @@
           <th scope="col">Email</th>
           <th scope="col">Số điện thoại</th>
           <th scope="col">Địa chỉ</th>
-          <th scope="col">Employed</th>
+          <th scope="col">Trạng thái hoạt động</th>
         </tr>
       </thead>
       <tbody>
@@ -34,12 +34,12 @@
           <td>{{ item.phoneNumber }}</td>
           <td>{{ item.address }}</td>
           <td>
-            <select v-model="item.status">
-              <option value="true">Hoạt Động bình thường</option>
-              <option value="false">Tạm thời bị khóa</option>
-            </select>
-            <button @click="() => confirm(item._id, item.status)">Confirm</button>
-          </td>
+        <select v-model="item.status" :style="{ color: getStatusColor(item.status) }" >
+          <option value="true">Hoạt Động bình thường</option>
+          <option value="false">Tạm thời bị khóa</option>
+        </select>
+        <button @click="() => confirm(item._id, item.status)">Confirm</button>
+      </td>
         </tr>
       </tbody>
     </table>
@@ -53,6 +53,7 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
 .model-body {
   position: relative;
   display: flex;
@@ -69,11 +70,13 @@
   margin-top: 20px;
   margin-bottom: 0px;
 }
+
+
 </style>
 
 <script setup>
 import ApiService from "@/services/api.service";
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 const nameChange = ref('');
 import { useRoute } from 'vue-router'
 
@@ -110,8 +113,21 @@ async function search() {
   console.log(response.data);
 }
 fetchData();
-onMounted(()=>{
- 
- search();
+onMounted(() => {
+
+  search();
+  
 })
+const getStatusColor = (status) => {
+  switch (status) {
+   
+    case 'true':
+      return 'green';
+    
+    case 'false':
+      return 'red';
+      default:
+      return  '';
+  }
+};
 </script>
