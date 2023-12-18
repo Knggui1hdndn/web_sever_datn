@@ -30,7 +30,7 @@
       </div>
       <h3 class="fs-5 mb-4 mt-4">Cập nhật chi tiết sản phẩm</h3>
       <div>
-        <div v-for="productDetail in product.productDetails" :key="productDetail._id"
+        <div v-for="(productDetail, indexDetail) in product.productDetails" :key="productDetail._id"
           class="d-flex align-items-center product-detail">
           <div class="size">
             <InputComp v-model="productDetail.size" :rules="notBlank" label="Kích cỡ" />
@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="flex-grow-1">
-            <div v-for="imageProductQuantity in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
+            <div v-for="(imageProductQuantity, indexImage) in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
               class="d-flex align-items-center image-product-quantity">
               <div class="flex-grow-1 pe-2">
                 <InputComp v-model="imageProductQuantity.quantity" label="Số lượng" :rules="notBlank" />
@@ -51,10 +51,25 @@
               <div class="product-image">
                 <img :src="imageProductQuantity.imageProduct.image" alt="">
               </div>
+              <div class="avatar-container" >                
+                      <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
+                          @change="(e) => handleFileUpload(e , indexDetail , indexImage)" />
+                          <!-- <img :src="item.imageProduct.image" alt=""> -->
+              </div>
+             
+            <div>
+            </div>
+           
               <button type="button" class="btn btn-primary ms-2"
-                @click="UpdateProductQuantity(imageProductQuantity._id, imageProductQuantity.quantity, imageProductQuantity._id)">
+                @click="UpdateProductQuantity(imageProductQuantity._id,imageProductQuantity.quantity,imageProductQuantity._id)">
                 <font-awesome-icon icon="fa-solid fa-repeat" class="icon delete" />
               </button>
+              <button type="button" class = "btn btn-primary ms-2"
+              @click="updateImage(imageProductQuantity.imageProduct._id, imageProductQuantity.imageProduct.color ,imageProductQuantity.imageProduct.image, imageProductQuantity.imageProduct._id)">
+              <font-awesome-icon icon = "rotate-right" />
+              </button>
+
+            
             </div>
           </div>
         </div>
@@ -66,8 +81,8 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Avatar</th>
-              <th scope="col">Name</th>
-              <th scope="col">Comment </th>
+              <th scope="col">Tên người dùng</th>
+              <th scope="col">Bình Luận </th>
               <th scope="col">Đánh giá sao </th>
               <th scope="col">Hành động</th>
 
@@ -78,8 +93,10 @@
   <tr v-for="(cmt, index) in data" :key="cmt.id">
     <th scope="row">{{ ++index }}</th>
     <td>
-      <img :src="cmt.avatar" alt="Avatar" class="avatar-image" />
-    </td>
+  <div class="avatar-container">
+    <img :src="cmt.avatar" alt="Avatar" class="avatar-image" />
+  </div>
+</td>
     <td>{{ cmt.name }}</td>
     <td>{{ cmt.comment }}</td>
     <td>{{ cmt.star }}</td>
@@ -91,7 +108,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa sản phẩm</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Bình luận</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -132,6 +149,9 @@ let product = ref({
   description: "",
   idCata: "",
 })
+const getOnchangeImage = (event)=>{
+  console.log
+}
 async function fetchData() {
   const response = await ApiService.get("/products/details/" + id);
   product.value = response.data;
@@ -156,6 +176,7 @@ const UpdateProduct = async () => {
     idCata: product.value.idCata._id,
     id: id,
   })
+  window.alert("Cập nhật chi tiết sản phẩm thành công!");
   console.log(response);
 }
 
@@ -164,6 +185,8 @@ const UpdateProductDetail = async (id, size) => {
     idProductDetail: id,
     size: size
   })
+  window.alert("cập nhật Size thành công");
+
   console.log(response);
 }
 
@@ -173,6 +196,7 @@ const UpdateProductQuantity = async (id, quantity, image) => {
     quantity: quantity,
     image: image
   })
+  window.alert("cập nhật số lượng sản phẩm thành công");
   console.log(response);
 }
 
@@ -201,6 +225,60 @@ const deletecmt = async (id) => {
   }
 };
 Comment();
+const file = ref("")
+let previewImage = "";
+const handleFileUpload = (event , indexDetail, indexImage)=> {
+    let selectedFile = ""
+    selectedFile = event.target.files[0];
+    if(selectedFile !== ""){
+      file.value = selectedFile
+      console.log(`Detail Index: ${indexDetail}, Image Index: ${indexImage}`);
+      encodeImage(file.value, indexDetail , indexImage);
+    }
+}
+const encodeImage = (file, indexDetail, indexImage) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64Image = reader.result.split(",")[1];
+    const imageData = "data:image/jpeg;base64," + base64Image;
+
+    if (product.value.productDetails && product.value.productDetails[indexDetail]) {
+      if (
+        product.value.productDetails[indexDetail].imageProductQuantity &&
+        product.value.productDetails[indexDetail].imageProductQuantity[indexImage]
+      ) {
+        product.value.productDetails[indexDetail].imageProductQuantity[indexImage].imageProduct.image = imageData;
+       
+      }
+    }
+    console.log( product.value.productDetails[indexDetail]);
+  };
+
+  reader.readAsDataURL(file);
+};
+const imageProduct = ref(null);
+
+const updateImage= async(id,color,image) =>{
+    try {
+      var formData = new FormData();
+      var imagefile = document.querySelector('#file');
+      formData.append("image", file.value ? file.value:image);
+      formData.append("color", color);
+        const response = await ApiService.put(`/products/image/${id}`,formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        imageProduct.value = response.data._id;
+
+        
+        window.alert("Cập nhật ảnh , màu sắc thành công!");
+    } catch (error) {
+        console.log(error);
+        window.alert("Đã xảy ra lỗi khi thêm màu sắc.");
+    }
+}
 
 </script>
 
@@ -232,5 +310,11 @@ Comment();
 .product-image img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+.avatar-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
 }</style>

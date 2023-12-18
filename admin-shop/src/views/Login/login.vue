@@ -3,13 +3,11 @@
     <div class="container">
       <div class="login-wrap">
         <form class="login-form">
-          <!-- Email input -->
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email/Phone Number</label>
             <input type="email" id="email" class="form-control" v-model="email" />
           </div>
 
-          <!-- Password input -->
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" class="form-control" v-model="password" />
@@ -42,10 +40,10 @@ const router = useRouter();
 import { ref } from 'vue';
 const email = ref('');
 const password = ref('');
-
+const message = ref('');
 async function login() {
   try {
-    const response = await ApiService.post("/auth/signIn", {
+    const response = await ApiService.post("/auth/signIn?roleType=ADMIN", {
       account: email.value,
       password: password.value
     });
@@ -53,10 +51,14 @@ async function login() {
     if (response.status === 200) {
       const token = response.headers.authorization;
       localStorage.setItem('token', token);
+      message.value = 'Login successful!';
+      window.alert(message.value);
       router.push("/");
     }
   } catch (error) {
     console.error("Error during login:", error);
+    message.value = 'Login failed. Please check your credentials.';
+    window.alert(message.value);
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container d-flex justify-content-between align-items-center" style="height: 60px;">
       <div class="logo">
-        <h3 class="fs-3 fw-bolder mb-0 ">LOGO</h3>
+        <h3 class="fs-3 fw-bolder mb-0 ">MenStyle</h3>
       </div>
       </div>
   </header>
