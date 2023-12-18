@@ -30,7 +30,7 @@
       </div>
       <h3 class="fs-5 mb-4 mt-4">Cập nhật chi tiết sản phẩm</h3>
       <div>
-        <div v-for="productDetail in product.productDetails" :key="productDetail._id"
+        <div v-for="(productDetail, indexDetail) in product.productDetails" :key="productDetail._id"
           class="d-flex align-items-center product-detail">
           <div class="size">
             <InputComp v-model="productDetail.size" :rules="notBlank" label="Kích cỡ" />
@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="flex-grow-1">
-            <div v-for="imageProductQuantity in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
+            <div v-for="(imageProductQuantity, indexImage) in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
               class="d-flex align-items-center image-product-quantity">
               <div class="flex-grow-1 pe-2">
                 <InputComp v-model="imageProductQuantity.quantity" label="Số lượng" :rules="notBlank" />
@@ -53,8 +53,8 @@
               </div>
               <div class="avatar-container" >                
                       <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
-                          @change="(e) => handleFileUpload(e)" />
-                        <img :src="previewImage"   >
+                          @change="(e) => handleFileUpload(e , indexDetail , indexImage)" />
+                          <!-- <img :src="item.imageProduct.image" alt=""> -->
               </div>
              
             <div>
@@ -227,23 +227,35 @@ const deletecmt = async (id) => {
 Comment();
 const file = ref("")
 let previewImage = "";
-const handleFileUpload = (event)=> {
+const handleFileUpload = (event , indexDetail, indexImage)=> {
     let selectedFile = ""
     selectedFile = event.target.files[0];
     if(selectedFile !== ""){
       file.value = selectedFile
-      console.log(file.value);
-      encodeImage(file.value);
+      console.log(`Detail Index: ${indexDetail}, Image Index: ${indexImage}`);
+      encodeImage(file.value, indexDetail , indexImage);
     }
 }
-const encodeImage = (file)=> {
-    const reader = new FileReader();
-    reader.onload = () => {
-        const base64Image = reader.result.split(",")[1];
-        previewImage = "data:image/jpeg;base64," + base64Image
-    };
-    reader.readAsDataURL(file);
-}
+const encodeImage = (file, indexDetail, indexImage) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64Image = reader.result.split(",")[1];
+    const imageData = "data:image/jpeg;base64," + base64Image;
+
+    if (product.value.productDetails && product.value.productDetails[indexDetail]) {
+      if (
+        product.value.productDetails[indexDetail].imageProductQuantity &&
+        product.value.productDetails[indexDetail].imageProductQuantity[indexImage]
+      ) {
+        product.value.productDetails[indexDetail].imageProductQuantity[indexImage].imageProduct.image = imageData;
+       
+      }
+    }
+    console.log( product.value.productDetails[indexDetail]);
+  };
+
+  reader.readAsDataURL(file);
+};
 const imageProduct = ref(null);
 
 const updateImage= async(id,color,image) =>{
@@ -305,5 +317,4 @@ const updateImage= async(id,color,image) =>{
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-}
-</style>
+}</style>

@@ -63,7 +63,7 @@
                 :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
               <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">
                 Giao Hàng thành công</option>
-              <option value="Hủy" :disabled="true">Hủy Bỏ</option>
+              <option value="Hủy" :disabled="item.status !== 'Chờ xác nhận'">Hủy Bỏ</option>
               <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
             </select>
             <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
