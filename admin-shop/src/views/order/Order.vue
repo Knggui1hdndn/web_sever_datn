@@ -117,6 +117,7 @@ const getLading = (event)=>{
 const confirm = async(id,status)=>{
   const response = await ApiService.put(`/order?idOrder=${id}&status=${status}`)
   console.log(response);
+  window.alert("thay đổi trạng thái đơn hàng thành công")
 }
 async function fetchData() {
   const response = await ApiService.get(`/order/search?startDate=${start_date}&endDate=${end_date}&phoneNumber=${phone}&orderCode=${lading}`);
