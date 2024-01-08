@@ -10,6 +10,39 @@
       </div>
 
     </div>
+    <h3 class="fs-5 mb-4">Danh sách nhân viên </h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Ảnh đại diện</th>
+          <th scope="col">Email</th>
+          <th scope="col">Số điện thoại</th>
+          <th scope="col">Địa chỉ</th>
+          <th scope="col">Trạng thái hoạt động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in data" :key="item.id">
+          <th scope="row">{{ ++index }}</th>
+          <td>{{ item.name }}</td>
+          <td>
+            <img :src="item.avatar" alt="Avatar" class="avatar-image" />
+          </td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.phoneNumber }}</td>
+          <td>{{ item.address }}</td>
+          <td>
+        <select v-model="item.status" :style="{ color: getStatusColor(item.status) }" >
+          <option value="true">Hoạt Động bình thường</option>
+          <option value="false">Tạm thời bị khóa</option>
+        </select>
+        <button @click="() => confirm(item._id, item.status)">Confirm</button>
+      </td>
+        </tr>
+      </tbody>
+    </table>
     <h3 class="fs-5 mb-4">Danh sách người dùng</h3>
     <table class="table table-striped table-bordered">
       <thead>
@@ -29,6 +62,8 @@
           <td>{{ item.name }}</td>
           <td>
             <img :src="item.avatar" alt="Avatar" class="avatar-image" />
+            <RouterLink :to="`users/${item._id}/ordertoU`" class="nav-link"><span class="action-icon"><font-awesome-icon
+                  icon="fa-solid fa-add" class="icon add" /></span></RouterLink>
           </td>
           <td>{{ item.email }}</td>
           <td>{{ item.phoneNumber }}</td>

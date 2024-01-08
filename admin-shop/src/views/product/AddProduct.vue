@@ -7,7 +7,10 @@
                     <InputComp v-model="product.name" name="name" label="Tên sản phẩm" :rules="notBlank" />
                 </div>
                 <div class="col-12 col-md-6">
-                    <InputComp v-model="product.price" name="price" label="Giá" :rules="priceRules" />
+                    <InputComp v-model="product.importPrice" name="importPrice" label="Giá nhập" :rules="notBlank" />
+                </div>
+                <div class="col-12 col-md-6">
+                    <InputComp v-model="product.price" name="price" label="Giá bán " :rules="priceRules" />
                 </div>
                 <div class="col-12 col-md-6">
                     <InputComp v-model="product.description" name="description" label="Mô tả" :rules="notBlank" />
@@ -19,6 +22,7 @@
                     <SelectComp v-model="selectedCate" :items="categories" itemTitle="category" itemValue="_id"
                         name="category" label="Loại sản phẩm" />
                 </div>
+                
                 <div class="row">
                     <h3 class="fs-5 mb-4 mt-2">Hình ảnh</h3>
                   
@@ -48,9 +52,11 @@ import { ref, } from "vue";
 const successMessage = ref(null);
 const product = ref({
     name: "",
+    importPrice : "",
     price: "",
     description: "",
     sale: "",
+
 });
 const selectedCate = ref(null)
 
