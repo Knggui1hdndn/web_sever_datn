@@ -12,21 +12,17 @@
 
       <div class="body">
         <div v-if="listMessage == null || listMessage.length == 0">
-          
+
         </div>
         <template v-else>
           <div class="conversation-wrap">
             <div class="conversation-reverse">
-              <div 
-                v-for="message in listMessage"
-                :key="message._id"
-                class="message-wrap"
-              >
+              <div v-for="message in listMessage" :key="message._id" class="message-wrap">
                 <div class="message-item self-message" v-if="message.isToUser">
-                  <p class="message-content">{{message.message}}</p>
+                  <p class="message-content">{{ message.message }}</p>
                 </div>
                 <div v-else class="message-item other-message">
-                  <div class="message-content">{{message.message}}</div>
+                  <div class="message-content">{{ message.message }}</div>
                 </div>
               </div>
             </div>
@@ -35,17 +31,11 @@
       </div>
 
       <div class="footer">
-        <font-awesome-icon icon="fa-solid fa-paperclip" class="icon"/>
+        <font-awesome-icon icon="fa-solid fa-paperclip" class="icon" />
         <div class="input-wrap">
-          <input 
-          class="input-msg"
-          ref="messageInput"
-          v-model="message"
-          type="text"
-          placeholder="Write a message"
-        >
+          <input class="input-msg" ref="messageInput" v-model="message" type="text" placeholder="Write a message">
         </div>
-        <font-awesome-icon icon="fa-solid fa-paper-plane" class="icon"  @click="sendMessage"/>
+        <font-awesome-icon icon="fa-solid fa-paper-plane" class="icon" @click="sendMessage " />
       </div>
     </div>
     <div v-else class="d-flex align-items-center justify-content-center wrapper">
@@ -57,13 +47,15 @@
 import ApiService from "@/services/api.service";
 import io from 'socket.io-client';
 
-
 export default {
   data() {
     return {
       listMessage: [],
       message: ''
     }
+  },
+  created() {
+    this.initSocketConnection();
   },
   computed: {
     convUserId() {
@@ -74,30 +66,51 @@ export default {
     async getChatInfo() {
       const response = await ApiService.get("/chat/all", {
         params: {
-          idUser: this.convUserId
+          id : this.convUserId
         }
       });
       this.listMessage = response.data
       console.log(this.listMessage);
+    }, initSocketConnection() {
+ 
+      this.socket = io('http://192.168.1.181:8000/');
+ 
+      this.socket.on('connect', () => {
+        console.log('Connected to socket server');
+       });
+
+      this.socket.on('receive_message', (message) => {
+        console.log('Received message:', message);
+        this.listMessage.push(message);
+      });
     },
     sendMessage() {
       if (this.message.trim() !== "") {
         const messageData = {
-          idUser: this.convUserId,
+          sender: "6580620f54359a69e67ae888",
+          receiver: this.convUserId,
           message: this.message,
-          isToUser: true 
+          isToUser: true
         };
+        this.socket.emit("send_message",messageData)
+        this.listMessage.push(messageData);
 
-        
-        this.$socket.emit("send_message", messageData);
-
-       
         this.message = "";
       }
     },
+    showNotification(title, message) {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body: message });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          new Notification(title, { body: message });
+        }
+      });
+    }
+  }
 
 
-    
   },
   mounted() {
     this.getChatInfo();
@@ -117,6 +130,7 @@ export default {
   position: relative;
   height: 100%;
 }
+
 .header {
   padding: 16px;
   display: flex;
@@ -124,10 +138,12 @@ export default {
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
 .header .name {
   font-weight: 500;
   color: rgb(19, 19, 19);
 }
+
 .header .info {
   font-size: 14px;
   color: rgb(120, 120, 120);
@@ -149,11 +165,13 @@ export default {
 .conversation-wrap::-webkit-scrollbar {
   width: 6px;
 }
+
 .conversation-wrap::-webkit-scrollbar-track {
-  background: rgb(220, 220, 220); 
+  background: rgb(220, 220, 220);
 }
+
 .conversation-wrap::-webkit-scrollbar-thumb {
-  background: rgb(72, 166, 195); 
+  background: rgb(72, 166, 195);
   border-radius: 8px;
 }
 
@@ -162,33 +180,40 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
 }
-.message-wrap:has(.other-message) + .message-wrap .other-message img {
+
+.message-wrap:has(.other-message)+.message-wrap .other-message img {
   visibility: hidden;
 }
+
 .message-wrap:not(.message-wrap:has(.other-message):has(+ .message-wrap .other-message)) .message-content {
   border-top-left-radius: 16px;
 }
+
 .message-wrap:not(.message-wrap:has(.self-message):has(+ .message-wrap .self-message)) .message-content {
   border-top-right-radius: 16px;
 }
-.message-wrap:has(.other-message) + .message-wrap:has(.self-message) .message-content {
-  border-bottom-right-radius: 16px;
-}
-.message-wrap:has(.self-message) + .message-wrap:has(.other-message) .message-content {
-  border-bottom-left-radius: 16px;
-}
-.message-wrap:first-child .message-content {
-  border-bottom-left-radius: 16px;
-}
-.message-wrap:first-child .message-content {
-  border-bottom-right-radius: 16px;
-}
-.message-wrap
 
-.message-item.other-message {
+.message-wrap:has(.other-message)+.message-wrap:has(.self-message) .message-content {
+  border-bottom-right-radius: 16px;
+}
+
+.message-wrap:has(.self-message)+.message-wrap:has(.other-message) .message-content {
+  border-bottom-left-radius: 16px;
+}
+
+.message-wrap:first-child .message-content {
+  border-bottom-left-radius: 16px;
+}
+
+.message-wrap:first-child .message-content {
+  border-bottom-right-radius: 16px;
+}
+
+.message-wrap .message-item.other-message {
   display: flex;
   align-items: center;
 }
+
 .message-item.other-message img {
   width: 30px;
   height: auto;
@@ -200,21 +225,24 @@ export default {
 .message-content {
   padding: 7px 12px 8px;
   border-radius: 5px;
-  background: rgb(220, 220, 220); 
+  background: rgb(220, 220, 220);
   float: left;
   margin-bottom: 1px;
   color: rgb(19, 19, 19);
   font-size: 15px;
   line-height: 20px;
 }
+
 .other-message .message-content {
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
 }
+
 .self-message .message-content {
   border-top-left-radius: 18px;
   border-bottom-left-radius: 18px;
 }
+
 .message-content p {
   margin: 0;
 }
@@ -231,6 +259,7 @@ export default {
   align-items: center;
   width: 100%;
 }
+
 .input-wrap {
   flex: 1;
   display: flex;
@@ -242,6 +271,7 @@ export default {
   height: 40px;
   position: relative;
 }
+
 .input-msg {
   font-size: 15px;
   flex: 1;
@@ -250,9 +280,11 @@ export default {
   background-color: transparent;
   color: rgb(19, 19, 19);
 }
+
 .input-msg::placeholder {
   color: rgb(120, 120, 120);
 }
+
 .footer .icon {
   color: var(--primary-color);
   font-size: 18px;
@@ -262,12 +294,13 @@ export default {
   cursor: pointer;
   border: 1px solid rgba(220, 220, 220, 0.8);
 }
+
 .footer .icon:hover {
   background-color: rgb(220, 220, 220);
 }
+
 .emoji-picker {
   position: absolute;
   bottom: calc(100% + 20px);
   right: 0;
-}
-</style>
+}</style>
