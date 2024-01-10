@@ -18,6 +18,18 @@
             <input type="checkbox" class="form-check-input" id="rememberMe" checked />
             <label class="form-check-label" for="rememberMe">Remember me</label>
           </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+            Admin
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+              Membership
+            </label>
+          </div>
 
           <!-- Sign in button -->
           <button type="button" class="btn btn-primary btn-block" @click="login">Sign in</button>
@@ -44,6 +56,26 @@ const message = ref('');
 async function login() {
   try {
     const response = await ApiService.post("/auth/signIn?roleType=ADMIN", {
+      account: email.value,
+      password: password.value
+    });
+
+    if (response.status === 200) {
+      const token = response.headers.authorization;
+      localStorage.setItem('token', token);
+      message.value = 'Login successful!';
+      window.alert(message.value);
+      router.push("/");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    message.value = 'Login failed. Please check your credentials.';
+    window.alert(message.value);
+  }
+}
+async function logintorembership() {
+  try {
+    const response = await ApiService.post("/auth/signIn?roleType=MEMBER", {
       account: email.value,
       password: password.value
     });

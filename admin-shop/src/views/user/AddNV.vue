@@ -7,7 +7,7 @@
                     <InputComp v-model="product.username" name="username" label="Tên Nhân Viên" :rules="notBlank" />
                 </div>
                 <div class="col-12 col-md-6">
-                    <InputComp v-model="product.phonenumber" name="phonenumber" label="Số điện thoại" :rules="notBlank" />
+                    <InputComp v-model="product.phoneNumber" name="phonenumber" label="Số điện thoại" :rules="notBlank" />
                 </div>
                
                 <div class="col-12 col-md-6">
@@ -42,7 +42,7 @@ import { useRoute } from 'vue-router';
 
 const product = ref({
     username: "",
-    phonenumber: "",
+    phoneNumber: "",
     password: "",
     address:"",
 });

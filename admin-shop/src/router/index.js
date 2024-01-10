@@ -45,8 +45,7 @@ const routes = [
         component: ()=> import("../views/product/AddProduct2.vue")
       },
       {
-
-        path:"getall",
+        path:":id/pro",
         name : "getallto",
         component: ()=> import("../views/product/ProToCate.vue")
       },
@@ -68,7 +67,7 @@ const routes = [
         component: () => import("../views/user/ListUser.vue"),
       },
       {
-        path: ":id/ỏ",
+        path: ":id/ordertoU",
         name: "OrdertoU",
         component: () => import("../views/user/OrdertoUser.vue"),
       },

@@ -45,6 +45,12 @@
                       <button type="button" class="btn btn-primary btn-block mb-4"
                         @click="() => UpdateCategory(category._id, category.category)">Cập nhật
                       </button>
+                     
+                       
+                        <RouterLink :to= "`${category._id}/pro`" >
+                          <button type="button" class="btn btn-success btn-block mb-4">Xem sản  phẩm</button>
+                        </RouterLink>
+                      
                     </div>
                   </td>
                 </tr>
