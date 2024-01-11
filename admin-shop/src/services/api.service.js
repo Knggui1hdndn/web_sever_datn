@@ -1,5 +1,7 @@
 import axios from "axios";
 import router from "../router";
+import { isAdmin, isMember } from "../utils/authUtils";
+
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const instance = axios.create({

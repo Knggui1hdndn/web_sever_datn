@@ -18,8 +18,22 @@
             <input type="checkbox" class="form-check-input" id="rememberMe" checked />
             <label class="form-check-label" for="rememberMe">Remember me</label>
           </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" v-model="roleType"
+              value="ADMIN">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Admin
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-model="roleType"
+              value="MEMBER">
+            <label class="form-check-label" for="flexRadioDefault2">
+              Membership
+            </label>
+          </div>
 
-          <!-- Sign in button -->
+
           <button type="button" class="btn btn-primary btn-block" @click="login">Sign in</button>
 
           <!-- Register link -->
@@ -41,26 +55,38 @@ import { ref } from 'vue';
 const email = ref('');
 const password = ref('');
 const message = ref('');
+const roleType = ref('MEMBER'); 
+
 async function login() {
   try {
-    const response = await ApiService.post("/auth/signIn?roleType=ADMIN", {
+    const response = await ApiService.post(`/auth/signIn?roleType=${roleType.value}`, {
       account: email.value,
       password: password.value
     });
-
     if (response.status === 200) {
       const token = response.headers.authorization;
+      const role = response.data.roleType; 
+
+      localStorage.setItem('role', role);
       localStorage.setItem('token', token);
       message.value = 'Login successful!';
       window.alert(message.value);
-      router.push("/");
+      console.log(roleType);
+      if (roleType.value === 'MEMBER') {
+        router.push("/orders");
+      } else {
+        router.push("/");
+      }
     }
+    console.log(roleType.value === 'MEMBER');
+    
   } catch (error) {
     console.error("Error during login:", error);
     message.value = 'Login failed. Please check your credentials.';
     window.alert(message.value);
   }
 }
+
 </script>
 
 <style scoped>

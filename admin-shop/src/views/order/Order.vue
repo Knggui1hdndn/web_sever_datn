@@ -55,26 +55,23 @@
             {{ item.codeOrders }}
           </td>
           <td>
-            <select v-model="item.status" :style="{ color: getStatusColor(item.status) }">
-              <option value="Chờ xác nhận" :disabled="item.status !== 'Chờ xác nhận'">Đang chờ xác nhận</option>
-              <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận'">Đã
-                xác nhận</option>
-              <option value="Đang giao hàng"
-                :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
-              <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">
-                Giao Hàng thành công</option>
-              <option value="Hủy" :disabled="item.status !== 'Chờ xác nhận'">Hủy Bỏ</option>
-              <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
-            </select>
-            <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
-          </td>
+  <select v-model="item.status" :style="{ color: getStatusColor(item.status) }">
+    <option value="Chờ xác nhận" :disabled="item.status !== 'Chờ xác nhận'">Đang chờ xác nhận</option>
+    <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận'">Đã xác nhận</option>
+    <option value="Đang giao hàng" :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
+    <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">Giao Hàng thành công</option>
+    <option value="Hủy" :disabled="item.status !== 'Chờ xác nhận' || item.isPay">Hủy Bỏ</option>
+    <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
+  </select>
+  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+</td>
           <td class="">
 
             <RouterLink :to="`orders/${item._id}/details`" class="nav-link"><span class="action-icon"><font-awesome-icon
                   icon="fa-solid fa-edit" class="icon edit" /></span></RouterLink>
 
 
-            <!-- Modal -->
+      
             <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

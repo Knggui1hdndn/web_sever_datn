@@ -73,7 +73,7 @@ export default {
       console.log(this.listMessage);
     }, initSocketConnection() {
  
-      this.socket = io('http://192.168.1.181:8000/');
+      this.socket = io('http://192.168.0.115:8000');
  
       this.socket.on('connect', () => {
         console.log('Connected to socket server');

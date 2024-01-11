@@ -1,20 +1,28 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import { authStore } from "../stores/authStore";
+import {  isAdmin, isMember } from "../utils/authUtils";
+
 
 const routes = [
   {
     path: "",
     component: () => import("../views/Base.vue"),
+        meta: { requiresAdmin: true },
+
     children: [
       {
         path: "",
         name: "Home",
         component: () => import("../views/Home.vue"),
+        meta: { requiresAuth: true }, // Example: requires authentication
+
       }
     ]
   },
+  
   {
     path: "/products",
+    meta: { requiresAdmin: true },
     component: () => import("../views/Base.vue"),
     children: [
       {
@@ -45,8 +53,7 @@ const routes = [
         component: ()=> import("../views/product/AddProduct2.vue")
       },
       {
-
-        path:"getall",
+        path:":id/pro",
         name : "getallto",
         component: ()=> import("../views/product/ProToCate.vue")
       },
@@ -55,6 +62,7 @@ const routes = [
   },
   {
     path: "/users",
+    meta: { requiresAdmin: true },
     component: () => import("../views/Base.vue"),
     children: [
       {
@@ -68,7 +76,7 @@ const routes = [
         component: () => import("../views/user/ListUser.vue"),
       },
       {
-        path: ":id/ỏ",
+        path: ":id/ordertoU",
         name: "OrdertoU",
         component: () => import("../views/user/OrdertoUser.vue"),
       },
@@ -124,5 +132,23 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+const getUserRole = () => {
+  return localStorage.getItem("role");
+};
 
-export default router
+
+router.beforeEach((to, from, next) => {
+  const userRole = getUserRole();
+
+  if (to.meta.requiresAuth && !userRole) {
+    next('/login');
+  } else if (to.meta.requiresAdmin && userRole !== "ADMIN") {
+    next('/orders');
+  } else if (to.meta.requiresMember && userRole !== "MEMBER") {
+    next('');
+  } else {
+    next();
+  }
+});
+
+export default router;
