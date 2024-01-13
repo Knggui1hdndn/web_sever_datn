@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import {  isAdmin, isMember } from "../utils/authUtils";
 
 
+
 const routes = [
   {
     path: "",
@@ -93,27 +94,54 @@ const routes = [
       },
       {
         path: ":id/details",
-        name: "OrdersDetails",
         component: () => import("../views/order/OrderDetails.vue"),
       },
     ]
   },
   {
-        path: "/login",
-        name: "Login",
-        component: () => import("../views/Login/login.vue"),
+        path: "/membership",
+        component: () => import("../views/Base.vue"),
+        children: [
+          {
+            path :"",
+            name : "Nhanvien",
+            component: () => import("../views/membership/MemberShip.vue"),
+
+          },
+          {
+            path :":id/detail",
+            name : "Nhanviena",
+            component: () => import("../views/membership/Detail.vue"),
+
+          },
+
+        ]
       
   },
+  {
+    path: "/login",
+    name: "a",
+    component: () => import("../views/Login/login.vue"),
+  
+},
   {
     path: "/register",
     name: "register",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login/Register.vue"),
+      import( "../views/Login/Register.vue"),
   },
   {
     path: "/chat",
-    component: () => import("../views/Chat/ChatLayout.vue"),
+    component: () => import("../views/Base.vue"),
     children: [
+      
+        {
+          path: "",
+          name: "Chat1",
+          component: () => import("../views/Chat/ChatLayout.vue"),
+        },
+
+      
       {
         path: "",
         name: "Chat",

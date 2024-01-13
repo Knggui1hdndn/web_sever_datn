@@ -125,12 +125,45 @@
 
       </tbody>
     </table>
+    <h3>Tốp 5 sản phẩm được xem nhiều nhất </h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Giá</th>
+          <th scope="col">Số Lượng đã bán</th>
+          <th scope="col">Thể Loại</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr v-for= "(top5Pro, index) in thongke.top5View" :key="top5Pro._id">
+          <th scope="row">{{ ++index }}</th>
+          <td>{{ top5Pro.name }}</td>
+        
+          <td>{{ top5Pro.price }}</td>
+          <td>{{ top5Pro.view }}</td>
+          <td>{{ top5Pro.idCata }}</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <line-chart :data="chartData" :options="chartOptions"></line-chart>
+
+  </div>
+  <div id="app">
+    <BarChart />
   </div>
 </template>
 
 <script setup>
 import ApiService from "@/services/api.service";
 import { onMounted, ref } from "vue";
+import { Line } from "vue-chartjs";
+
+
+
 let start_date = "";
 let end_date = "";
 
@@ -199,9 +232,72 @@ const getToDate = async()=>{
   }
 }
 onMounted(()=>{
+  
  
 
 })
+// const gradient = ref(null);
+// const gradient2 = ref(null);
+
+// const chartData = ref({
+//   labels: [
+//     'January',
+//     'February',
+//     'March',
+//     'April',
+//     'May',
+//     'June',
+//     'July'
+//   ],
+//   datasets: [
+//     {
+//       label: 'Data One',
+//       borderColor: '#FC2525',
+//       pointBackgroundColor: 'white',
+//       borderWidth: 1,
+//       pointBorderColor: 'white',
+//       backgroundColor: gradient,
+//       data: [40, 39, 10, 40, 39, 80, 40]
+//     },
+//     {
+//       label: 'Data Two',
+//       borderColor: '#05CBE1',
+//       pointBackgroundColor: 'white',
+//       pointBorderColor: 'white',
+//       borderWidth: 1,
+//       backgroundColor: gradient2,
+//       data: [60, 55, 32, 10, 2, 12, 53]
+//     }
+//   ]
+// });
+
+// const chartOptions = ref({
+//   responsive: true,
+//   maintainAspectRatio: false
+// });
+
+// onMounted(() => {
+//   gradient.value = createGradient('rgba(255, 0, 0, 0.5)', 'rgba(255, 0, 0, 0)');
+//   gradient2.value = createGradient(
+//     'rgba(0, 231, 255, 0.9)',
+//     'rgba(0, 231, 255, 0)'
+//   );
+
+//   const chart = new Line();
+//   chart.renderChart(chartData, chartOptions);
+// });
+
+// const createGradient = (color1, color2) => {
+//   const canvas = document.createElement('canvas');
+//   const ctx = canvas.getContext('2d');
+//   const gradient = ctx.createLinearGradient(0, 0, 0, 450);
+
+//   gradient.addColorStop(0, color1);
+//   gradient.addColorStop(0.5, color2);
+//   gradient.addColorStop(1, color2);
+
+//   return gradient;
+// };
 
 </script>
 

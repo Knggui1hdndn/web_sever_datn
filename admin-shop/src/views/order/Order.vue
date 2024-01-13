@@ -39,6 +39,8 @@
           <th scope="col">Tổng giá tiền</th>
           <th scope="col">Mã đơn hàng</th>
           <th scope="col">Trạng thái Đơn Hàng</th>
+          <th scope="col">Xác Nhận Đơn hàng</th>
+          <th scope="col"> Chi tiết đơn hàng</th>
         </tr>
       </thead>
       <tbody>
@@ -65,6 +67,7 @@
   </select>
   <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
 </td>
+<td></td>
           <td class="">
 
             <RouterLink :to="`orders/${item._id}/details`" class="nav-link"><span class="action-icon"><font-awesome-icon

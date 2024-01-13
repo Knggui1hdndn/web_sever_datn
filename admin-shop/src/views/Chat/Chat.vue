@@ -31,11 +31,17 @@
       </div>
 
       <div class="footer">
-        <font-awesome-icon icon="fa-solid fa-paperclip" class="icon" />
+        <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file" style="display: none"
+          ref="fileInput" @change="(e) => handleFileUpload(e)" />
+        <label for="image" class="paperclip-label">
+          <font-awesome-icon icon="fa-solid fa-paperclip" class="icon" />
+        </label>
+        <img :src="previewImage" alt="Preview Image" v-if="previewImage" />
+
         <div class="input-wrap">
           <input class="input-msg" ref="messageInput" v-model="message" type="text" placeholder="Write a message">
         </div>
-        <font-awesome-icon icon="fa-solid fa-paper-plane" class="icon" @click="sendMessage " />
+        <font-awesome-icon icon="fa-solid fa-paper-plane" class="icon" @click="sendMessage" />
       </div>
     </div>
     <div v-else class="d-flex align-items-center justify-content-center wrapper">
@@ -46,6 +52,41 @@
 <script>
 import ApiService from "@/services/api.service";
 import io from 'socket.io-client';
+let previewImage = "";
+const handleFileUpload = (event)=> {
+    file.value = event.target.files[0];
+    console.log(file.value);
+    encodeImage(file.value);
+}
+const encodeImage = (file)=> {
+    const reader = new FileReader();
+    reader.onload = () => {
+        const base64Image = reader.result.split(",")[1];
+        previewImage = "data:image/jpeg;base64," + base64Image;
+    };
+    reader.readAsDataURL(file);
+}
+const image = async () => {
+    var formData = new FormData();
+    var imagefile = document.querySelector('#file');
+    formData.append("image", file.value);
+
+    try {
+        const response = await ApiService.post("/chat", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        idProductImage.value = response.data._id;
+
+        window.alert("Thêm màu sắc thành công!");
+    } catch (error) {
+        console.log(error);
+        window.alert("Đã xảy ra lỗi khi thêm màu sắc.");
+    }
+}
+
 
 export default {
   data() {
@@ -66,18 +107,18 @@ export default {
     async getChatInfo() {
       const response = await ApiService.get("/chat/all", {
         params: {
-          id : this.convUserId
+          id: this.convUserId
         }
       });
       this.listMessage = response.data
       console.log(this.listMessage);
     }, initSocketConnection() {
- 
-      this.socket = io('http://192.168.0.115:8000');
- 
+
+      this.socket = io('http://192.168.0.102:8000');
+
       this.socket.on('connect', () => {
         console.log('Connected to socket server');
-       });
+      });
 
       this.socket.on('receive_message', (message) => {
         console.log('Received message:', message);
@@ -92,23 +133,23 @@ export default {
           message: this.message,
           isToUser: true
         };
-        this.socket.emit("send_message",messageData)
+        this.socket.emit("send_message", messageData)
         this.listMessage.push(messageData);
 
         this.message = "";
       }
     },
     showNotification(title, message) {
-    if (Notification.permission === 'granted') {
-      new Notification(title, { body: message });
-    } else if (Notification.permission !== 'denied') {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          new Notification(title, { body: message });
-        }
-      });
+      if (Notification.permission === 'granted') {
+        new Notification(title, { body: message });
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            new Notification(title, { body: message });
+          }
+        });
+      }
     }
-  }
 
 
   },
@@ -303,4 +344,5 @@ export default {
   position: absolute;
   bottom: calc(100% + 20px);
   right: 0;
-}</style>
+}
+</style>

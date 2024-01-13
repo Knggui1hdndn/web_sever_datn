@@ -18,8 +18,13 @@
       <RouterLink to="/" class="nav-link">Thống kê</RouterLink>
     </div>
     <div class="d-flex align-items-center py-2 pe-2 nav-wrap">
-      <font-awesome-icon icon="fa-solid fa-home" class="icon"/>
-      <RouterLink to="/chat" class="nav-link">Chat</RouterLink>
+      <font-awesome-icon :icon="['fas', 'comment']" />    
+             <RouterLink to="/chat" class="nav-link">Chat</RouterLink>
+    </div>
+    
+    <div class="d-flex align-items-center py-2 pe-2 nav-wrap">
+      <font-awesome-icon :icon="['fasr', 'users']" />    
+        <RouterLink to="/membership" class="nav-link">Nhân viên</RouterLink>
     </div>
 
     <div class="d-flex align-items-center py-2 pe-2 nav-wrap">
