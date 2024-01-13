@@ -15,15 +15,16 @@ export const data = {
     ],
     datasets: [
       {
-        label: 'Data One',
+        label: 'Lợi Nhuận',
         backgroundColor: '#f87979',
         data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
       }
     ]
   }
   
+  
   export const options = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: true
   }
   

@@ -150,9 +150,9 @@
       </tbody>
     </table>
     <!-- <LineChart /> -->
-    <div>
+  
       <Chart />
-    </div>
+    
  <div>
   <Donut />
  </div>

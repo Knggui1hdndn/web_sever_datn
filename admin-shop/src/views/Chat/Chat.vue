@@ -1,5 +1,6 @@
 <template>
-  <div class="">
+  <ChatLayout>
+    <div class="">
     <div v-if="!!convUserId" class="wrapper">
       <div class="header">
         <div>
@@ -12,7 +13,6 @@
 
       <div class="body">
         <div v-if="listMessage == null || listMessage.length == 0">
-
         </div>
         <template v-else>
           <div class="conversation-wrap">
@@ -55,13 +55,17 @@
     </div>
 
   </div>
+  </ChatLayout>
 </template>
 <script >
 import ApiService from "@/services/api.service";
 import io from 'socket.io-client';
-
+import ChatLayout from "./ChatLayout.vue";
 
 export default {
+  components:{
+    ChatLayout
+  },
   data() {
     return {
       listMessage: [],

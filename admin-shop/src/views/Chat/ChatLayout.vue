@@ -4,7 +4,7 @@
             <ChatList :items="listChat"/>
         </div>
         <div class="flex-grow-1">
-            <router-view></router-view>
+         <slot></slot>
         </div>
     </div>
 </template>

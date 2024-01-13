@@ -60,9 +60,14 @@ const fetchData = async () => {
   try {
     const response = await ApiService.get(`/products/${id}`);
     data.value = response.data;
+    response.data.map((e) => {
+    count(e._id)
+    })
   } catch (error) {
     console.error('Error fetching product details:', error);
+
   }
+  
 };
 let countArr = ref([]);
 const count = async (id) => {

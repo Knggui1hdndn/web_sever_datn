@@ -67,8 +67,12 @@
   </select>
   <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
 </td>
-<td></td>
+<td>
+  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+
+</td>
           <td class="">
+
 
             <RouterLink :to="`orders/${item._id}/details`" class="nav-link"><span class="action-icon"><font-awesome-icon
                   icon="fa-solid fa-edit" class="icon edit" /></span></RouterLink>
