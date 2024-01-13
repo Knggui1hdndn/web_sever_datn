@@ -149,8 +149,13 @@
 
       </tbody>
     </table>
-    <line-chart :data="chartData" :options="chartOptions"></line-chart>
-
+    <!-- <LineChart /> -->
+    <div>
+      <Chart />
+    </div>
+ <div>
+  <Donut />
+ </div>
   </div>
   <div id="app">
     <BarChart />
@@ -160,8 +165,9 @@
 <script setup>
 import ApiService from "@/services/api.service";
 import { onMounted, ref } from "vue";
-import { Line } from "vue-chartjs";
-
+import LineChart from "./LineChart.vue";
+import Chart from "./Chart.vue";
+import Donut from "./Donut.vue";
 
 
 let start_date = "";

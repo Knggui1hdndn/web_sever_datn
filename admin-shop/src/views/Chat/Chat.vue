@@ -19,10 +19,16 @@
             <div class="conversation-reverse">
               <div v-for="message in listMessage" :key="message._id" class="message-wrap">
                 <div class="message-item self-message" v-if="message.isToUser">
-                  <p class="message-content">{{ message.message }}</p>
+                  <p v-if="message.message" class="message-content">{{ message.message }}</p>
+                  <div v-for="(url, i) in message.url" :key="i" class="images">
+                    <img :src="url" alt="">
+                  </div>
                 </div>
                 <div v-else class="message-item other-message">
-                  <div class="message-content">{{ message.message }}</div>
+                  <div v-if="message.message" class="message-content">{{ message.message }}</div>
+                  <div v-for="(url, i) in message.url" :key="i" class="images">
+                    <img :src="url" alt="">
+                  </div>
                 </div>
               </div>
             </div>
@@ -36,7 +42,7 @@
         <label for="image" class="paperclip-label">
           <font-awesome-icon icon="fa-solid fa-paperclip" class="icon" />
         </label>
-        <img :src="previewImage" alt="Preview Image" v-if="previewImage" />
+        <!-- <img :src="previewImage" alt="Preview Image" v-if="previewImage" /> -->
 
         <div class="input-wrap">
           <input class="input-msg" ref="messageInput" v-model="message" type="text" placeholder="Write a message">
@@ -47,52 +53,21 @@
     <div v-else class="d-flex align-items-center justify-content-center wrapper">
       Hãy chọn một đoạn chat
     </div>
+
   </div>
 </template>
-<script>
+<script >
 import ApiService from "@/services/api.service";
 import io from 'socket.io-client';
-let previewImage = "";
-const handleFileUpload = (event)=> {
-    file.value = event.target.files[0];
-    console.log(file.value);
-    encodeImage(file.value);
-}
-const encodeImage = (file)=> {
-    const reader = new FileReader();
-    reader.onload = () => {
-        const base64Image = reader.result.split(",")[1];
-        previewImage = "data:image/jpeg;base64," + base64Image;
-    };
-    reader.readAsDataURL(file);
-}
-const image = async () => {
-    var formData = new FormData();
-    var imagefile = document.querySelector('#file');
-    formData.append("image", file.value);
-
-    try {
-        const response = await ApiService.post("/chat", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        
-        idProductImage.value = response.data._id;
-
-        window.alert("Thêm màu sắc thành công!");
-    } catch (error) {
-        console.log(error);
-        window.alert("Đã xảy ra lỗi khi thêm màu sắc.");
-    }
-}
 
 
 export default {
   data() {
     return {
       listMessage: [],
-      message: ''
+      message: '',
+      file: null,
+      imageUrls: [],
     }
   },
   created() {
@@ -114,7 +89,7 @@ export default {
       console.log(this.listMessage);
     }, initSocketConnection() {
 
-      this.socket = io('http://192.168.0.102:8000');
+      this.socket = io('http://192.168.1.191:8000');
 
       this.socket.on('connect', () => {
         console.log('Connected to socket server');
@@ -126,17 +101,19 @@ export default {
       });
     },
     sendMessage() {
-      if (this.message.trim() !== "") {
+      if (this.message.trim() !== "" || this.imageUrls.length > 0) {
         const messageData = {
           sender: "6580620f54359a69e67ae888",
           receiver: this.convUserId,
-          message: this.message,
-          isToUser: true
+          message: this.imageUrls.length > 0 ? '' : this.message,
+          isToUser: true,
+          url: this.imageUrls
         };
         this.socket.emit("send_message", messageData)
         this.listMessage.push(messageData);
 
         this.message = "";
+        this.imageUrls = [];
       }
     },
     showNotification(title, message) {
@@ -149,7 +126,26 @@ export default {
           }
         });
       }
-    }
+    },
+    handleFileUpload(event) {
+      this.file = event.target.files[0];
+      this.uploadImage();
+    },
+    async uploadImage() {
+      var formData = new FormData();
+      formData.append("images", this.file);
+      try {
+          const response = await ApiService.post("/chat", formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+          });
+          this.imageUrls = response.data;
+          this.sendMessage();
+      } catch (error) {
+          console.log(error);
+      }
+  }
 
 
   },
@@ -223,10 +219,10 @@ export default {
 }
 
 .message-wrap:has(.other-message)+.message-wrap .other-message img {
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
-.message-wrap:not(.message-wrap:has(.other-message):has(+ .message-wrap .other-message)) .message-content {
+/* .message-wrap:not(.message-wrap:has(.other-message):has(+ .message-wrap .other-message)) .message-content {
   border-top-left-radius: 16px;
 }
 
@@ -240,7 +236,7 @@ export default {
 
 .message-wrap:has(.self-message)+.message-wrap:has(.other-message) .message-content {
   border-bottom-left-radius: 16px;
-}
+} */
 
 .message-wrap:first-child .message-content {
   border-bottom-left-radius: 16px;
@@ -251,27 +247,31 @@ export default {
 }
 
 .message-wrap .message-item.other-message {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
 }
 
 .message-item.other-message img {
-  width: 30px;
+  /* width: 30px;
   height: auto;
   margin: 0 5px 5px;
   display: block;
-  border-radius: 50%;
+  border-radius: 50%; */
 }
 
 .message-content {
   padding: 7px 12px 8px;
   border-radius: 5px;
   background: rgb(220, 220, 220);
-  float: left;
+  /* float: left; */
+  display: inline-block;
   margin-bottom: 1px;
   color: rgb(19, 19, 19);
   font-size: 15px;
   line-height: 20px;
+  max-width: 500px;
+  text-wrap: wrap;
+  overflow-wrap: break-word;
 }
 
 .other-message .message-content {
@@ -292,6 +292,21 @@ export default {
   background-color: rgb(41, 95, 194);
   float: right;
   color: #fff;
+}
+.images {
+  display: flex;
+  max-width: 500px;
+  float: right;
+}
+.message-wrap .message-item.other-message .images {
+  float: none;
+}
+.images img {
+  width: 100px;
+  height: 150px;
+  object-fit: contain;
+  border: 1px solid #888;
+  border-radius: 4px;
 }
 
 .footer {
