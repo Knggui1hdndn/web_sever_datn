@@ -154,7 +154,7 @@
       <Chart />
     
  <div>
-  <Donut />
+  <!-- <Donut /> -->
  </div>
   </div>
   <div id="app">

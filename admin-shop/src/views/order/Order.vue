@@ -65,10 +65,10 @@
     <option value="Hủy" :disabled="item.status !== 'Chờ xác nhận' || item.isPay">Hủy Bỏ</option>
     <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
   </select>
-  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'||item.status === 'Trả hàng'">Confirm</button>
 </td>
 <td>
-  <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'">Xác Nhận đơn </button>
+  <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'|| item.status === 'Trả hàng' ">Xác Nhận đơn </button>
 
 </td>
           <td class="">
@@ -122,10 +122,24 @@ const getLading = (event) => {
   console.log(lading);
 }
 const confirm = async (id, status) => {
-  const response = await ApiService.put(`/order?idOrder=${id}&status=${status}`)
-  console.log(response);
-  window.alert("Thay đổi trạng thái đơn hàng thành công")
+  try {
+    const response = await ApiService.put(`/order?idOrder=${id}&status=${status}`);
+    
+    if (response) {
+      window.alert("Thay đổi trạng thái đơn hàng thành công");
+    } else {
+      window.alert("Thay đổi trạng thái đơn hàng không thành công");
+      location.reload();
+
+    }
+  } catch (error) {
+    console.error("Error during status change:", error);
+    window.alert("Đơn hàng chưa có người nhận");
+    location.reload();
+
+  }
 }
+
 async function fetchData() {
   const response = await ApiService.get(`/order/search?startDate=${start_date}&endDate=${end_date}&phoneNumber=${phone}&orderCode=${lading}`);
   data.value = response.data;

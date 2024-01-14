@@ -25,7 +25,7 @@ export default {
     return {
       data: {
         labels: ['January', 'February', 'March'],
-        datasets: [{ data: [400, 20, 100 , 80] }]
+        datasets: [{ data: [ ] }]
       },
       options: {
         responsive: true
