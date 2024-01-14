@@ -68,7 +68,7 @@
   <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
 </td>
 <td>
-  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+  <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'">Xác Nhận đơn </button>
 
 </td>
           <td class="">
@@ -131,6 +131,26 @@ async function fetchData() {
   data.value = response.data;
   console.log(response.data);
 }
+const xacnhan = async (id) => {
+  try {
+    const response = await ApiService.post(`/order/confirmer/${id}`);
+    
+    if (response.status === 200) {
+      console.log(response);
+      window.alert("Thay đổi trạng thái đơn hàng thành công");
+    } else if (response.status === 404) {
+      console.log(response);
+      window.alert("Đơn hàng đã được xác nhận trước đó");
+    } else {
+      console.log(response);
+      window.alert("Xác nhận đơn hàng không thành công. Mã lỗi: " + response.status);
+    }
+  } catch (error) {
+    console.error("Error during order confirmation:", error);
+    window.alert("Đơn hàng đã được xác nhận trước đó ");
+  }
+};
+
 onMounted(() => {
 
   fetchData();
