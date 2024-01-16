@@ -3,25 +3,36 @@
         <h3 class="fs-5 mb-4">Thêm Sản phẩm</h3>
         <div class="container-fluid">
             <div class="row">
+                
                 <div class="col-12 col-md-6">
-                    <InputComp v-model="product.size" name="size" label="Size" :rules="notBlank" />
+                    <label for="">Size </label>
+                    <select v-model="product.size" class="form-control"  >
+                        <option value="S" >S</option>
+                        <option value="XS" >XS</option>
+                        <option value="M" >M</option>
+                        <option value="L" >L</option>
+                        <option value="XL" >XL</option>
+                        <option value="XXL" >XXL</option>
+
+                        
+                    </select>
                 </div>
                 <div class="col-12 col-md-6">
                     <InputComp v-model="product.color" name="color" label="Màu săc" :rules="notBlank" />
                 </div>
-               
+
                 <div class="col-12 col-md-6">
                     <InputComp v-model="product.quantity" name="quantity" label=" Số lượng" :rules="notBlank" />
                 </div>
-               
+
                 <div class="row">
                     <h3 class="fs-5 mb-4 mt-2">Hình ảnh</h3>
-                   
+
                     <input id="image" accept="image/gif, image/jpeg, image/png, image/jpg" type="file"
                         @change="(e) => handleFileUpload(e)" />
-                        <img :src="previewImage">
+                    <img :src="previewImage">
                 </div>
-                
+
             </div>
 
         </div>
@@ -43,7 +54,7 @@ const product = ref({
     quantity: "",
 });
 const route = useRoute();
-const { id } = route.params; 
+const { id } = route.params;
 
 const notBlank = [
     (v) => !!v || "Không được để trống"
@@ -51,12 +62,12 @@ const notBlank = [
 
 const file = ref(null);
 let previewImage = "";
-const handleFileUpload = (event)=> {
+const handleFileUpload = (event) => {
     file.value = event.target.files[0];
     console.log(file.value);
     encodeImage(file.value);
 }
-const encodeImage = (file)=> {
+const encodeImage = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
         const base64Image = reader.result.split(",")[1];
@@ -73,12 +84,12 @@ const addColor = async () => {
     formData.append("color", product.value.color);
 
     try {
-        const response = await ApiService.post("/products/image/"+id, formData, {
+        const response = await ApiService.post("/products/image/" + id, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        
+
         idProductImage.value = response.data._id;
 
         window.alert("Thêm màu sắc thành công!");
@@ -90,14 +101,14 @@ const addColor = async () => {
 
 const addSize = async () => {
     try {
-        const response = await ApiService.post("products/details/"+id, {
+        const response = await ApiService.post("products/details/" + id, {
             size: product.value.size,
         });
-        
+
         console.log(response);
-        
+
         if (response.status == 201 || response.status == 200) {
-            const responseQuatity = await ApiService.post("products/productQuantity/"+response.data._id, {
+            const responseQuatity = await ApiService.post("products/productQuantity/" + response.data._id, {
                 idProductDetail: response.data._id,
                 imageProduct: idProductImage.value,
                 quantity: product.value.quantity
@@ -112,7 +123,7 @@ const addSize = async () => {
 
         window.alert("Đã xảy ra lỗi khi thêm size.");
     }
-} 
+}
 
 const add = async () => {
     await addColor();

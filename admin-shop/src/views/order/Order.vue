@@ -62,10 +62,10 @@
     <option value="Đã xác nhận" :disabled="item.status !== 'Chờ xác nhận' && item.status !== 'Đã xác nhận'">Đã xác nhận</option>
     <option value="Đang giao hàng" :disabled="item.status !== 'Đã xác nhận' && item.status !== 'Đang giao hàng'">Đang giao hàng</option>
     <option value="Đã giao hàng" :disabled="item.status !== 'Đang giao hàng' && item.status !== 'Đã giao hàng'">Giao Hàng thành công</option>
-    <option value="Hủy" :disabled="item.status !== 'Chờ xác nhận' || item.isPay">Hủy Bỏ</option>
+    <option value="Hủy" :disabled="item.status === 'Chờ xác nhận' && item.isPay === false ? false : true">Hủy Bỏ</option>
     <option value="Trả hàng" :disabled="item.status !== 'Đã giao hàng'">Trả Hàng</option>
   </select>
-  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'">Confirm</button>
+  <button @click="confirm(item._id, item.status)">Confirm</button>
 </td>
 <td>
   <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'">Xác Nhận đơn </button>
@@ -107,6 +107,7 @@ let start_date = "";
 let end_date = "";
 let phone = "";
 let lading = "";
+let isConfirm  = false;
 const getStartChange = (event) => {
   start_date = event.target.value.split('T')[0];
 }
@@ -138,11 +139,14 @@ const xacnhan = async (id) => {
     if (response.status === 200) {
       console.log(response);
       window.alert("Thay đổi trạng thái đơn hàng thành công");
+      isConfirm = true;
     } else if (response.status === 404) {
+      isConfirm = false;
       console.log(response);
       window.alert("Đơn hàng đã được xác nhận trước đó");
     } else {
       console.log(response);
+      isConfirm = false;
       window.alert("Xác nhận đơn hàng không thành công. Mã lỗi: " + response.status);
     }
   } catch (error) {
@@ -150,6 +154,7 @@ const xacnhan = async (id) => {
     window.alert("Đơn hàng đã được xác nhận trước đó ");
   }
 };
+
 
 onMounted(() => {
 

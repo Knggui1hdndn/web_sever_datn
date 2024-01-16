@@ -33,8 +33,18 @@
         <div v-for="(productDetail, indexDetail) in product.productDetails" :key="productDetail._id"
           class="d-flex align-items-center product-detail">
           <div class="size">
-            <InputComp v-model="productDetail.size" :rules="notBlank" label="Kích cỡ" />
-            <div class="text-center">
+                    <label for="">Size </label>
+                    <select v-model="productDetail.size" class="form-control"  >
+                        <option value="S" >S</option>
+                        <option value="XS" >XS</option>
+                        <option value="M" >M</option>
+                        <option value="L" >L</option>
+                        <option value="XL" >XL</option>
+                        <option value="XXL" >XXL</option>
+
+                        
+                    </select>
+                           <div class="text-center">
               <button type="button" class="btn btn-primary"
                 @click="UpdateProductDetail(productDetail._id, productDetail.size)">Cập nhật</button>
             </div>

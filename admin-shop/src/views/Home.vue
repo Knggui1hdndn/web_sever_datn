@@ -132,7 +132,7 @@
           <th scope="col">STT</th>
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Giá</th>
-          <th scope="col">Số Lượng đã bán</th>
+          <th scope="col">Số Lượt xem</th>
           <th scope="col">Thể Loại</th>
         </tr>
       </thead>
