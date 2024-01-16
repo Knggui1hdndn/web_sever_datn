@@ -1,23 +1,12 @@
 export const data = {
     labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+      'Tháng Một', 'Tháng Hai', 'Tháng Ba', 'Tháng Tư', 'Tháng Năm', 'Tháng Sáu', 'Tháng Bảy', 'Tháng Tám', 'Tháng Chín', 'Tháng Mười', 'Tháng Mười Một', 'Tháng Mười Hai'
     ],
     datasets: [
       {
         label: 'Lợi Nhuận',
         backgroundColor: '#f87979',
-        data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
+        data: [ ]
       }
     ]
   }
@@ -25,6 +14,5 @@ export const data = {
   
   export const options = {
     responsive: true,
-    maintainAspectRatio: true
-  }
+   }
   

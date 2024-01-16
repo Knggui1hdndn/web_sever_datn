@@ -100,6 +100,8 @@ const routes = [
   },
   {
         path: "/membership",
+        meta: { requiresAdmin: true },
+
         component: () => import("../views/Base.vue"),
         children: [
           {
