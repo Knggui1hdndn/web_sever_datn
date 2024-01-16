@@ -67,10 +67,9 @@
   </select>
   <button @click="confirm(item._id, item.status)">Confirm</button>
 
-  <button @click="confirm(item._id, item.status)" :disabled="item.status === 'Hủy'||item.status === 'Trả hàng'">Confirm</button>
 </td>
 <td>
-  <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'|| item.status === 'Trả hàng' ">Xác Nhận đơn </button>
+  <button @click="xacnhan(item._id, item.status)" :disabled="item.status === 'Hủy'|| item.status === 'Trả hàng' || item.status === 'Đã xác nhận' || item.status === 'Đã xác nhận' || item.status ==='Đã giao hàng'  ">Xác Nhận đơn </button>
 
 </td>
           <td class="">
