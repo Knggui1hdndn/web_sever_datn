@@ -135,8 +135,15 @@ const confirm = async (id, status) => {
 
     }
   } catch (error) {
-    console.error("Error during status change:", error);
-    window.alert("Đơn hàng chưa có người nhận");
+    if (error.response) {
+    // Xử lý lỗi từ phía server
+    const errorMessage = error.response.data.error || "Có lỗi xảy ra từ server";
+    window.alert(errorMessage);
+  } else {
+    // Xử lý lỗi từ phía client hoặc lỗi không xác định
+    window.alert("Có lỗi xảy ra. Vui lòng thử lại sau");
+  }
+
     location.reload();
 
   }
@@ -153,7 +160,7 @@ const xacnhan = async (id) => {
     
     if (response.status === 200) {
       console.log(response);
-      window.alert("Thay đổi trạng thái đơn hàng thành công");
+      window.alert("Đơn hàng đã được xác nhận");
       isConfirm = true;
     } else if (response.status === 404) {
       isConfirm = false;
