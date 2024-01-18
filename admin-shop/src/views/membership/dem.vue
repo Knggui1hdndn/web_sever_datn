@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item) in Count" :key="item.id">
+            <tr v-for="(item) in data" :key="item.id">
   
               <td>{{ item.name }}</td>
               <td>{{ item.totalCount }}</td>
@@ -95,8 +95,7 @@
   <script setup>
   import ApiService from "@/services/api.service";
   import { ref, onMounted } from "vue";
-  const data = ref({});
-  const Count = ref([]);
+  const data = ref([]);
   const startDate = ref('');
   const endDate = ref('');
   let start_date = "";
@@ -111,7 +110,7 @@
   async function dem() {
     try {
       const response = await ApiService.get(`/users/totalCountOrder?startDate=${start_date}&endDate=${end_date}`);
-      Count.value = response.data;
+      data.value = response.data;
       console.log(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -119,7 +118,7 @@
   }
   
   onMounted(() => {
-    fetchData();
+    
   
     dem();
   
