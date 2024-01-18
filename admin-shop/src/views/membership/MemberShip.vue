@@ -28,6 +28,7 @@
             <td>{{ item.name }}</td>
             <td>{{ item.phoneNumber }}</td>
             <td>{{ item.address }}</td>
+            
 
 
           </tr>
@@ -55,10 +56,9 @@
             <th scope="col">#</th>
             <th scope="col">Tên Nhân viên </th>
             <th scope="col">Số đơn đã bán </th>
+            <th scope="col">Tổng tiền</th>
             <th scope="col">Chi tiết</th>
-
-
-
+            
           </tr>
         </thead>
         <tbody>
@@ -67,6 +67,7 @@
 
             <td>{{ item.name }}</td>
             <td>{{ item.totalCount }}</td>
+            <td>{{ item.totalAmount }}</td>
             <td>
               <RouterLink :to="`membership/${item.id}/detail`" class="nav-link"><span
                   class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit" /></span></RouterLink>

@@ -27,6 +27,10 @@
       <font-awesome-icon :icon="['fasr', 'users']" />    
         <RouterLink to="/membership" class="nav-link">Nhân viên</RouterLink>
     </div>
+    <div v-if="role === false" class="d-flex align-items-center py-2 pe-2 nav-wrap">
+      <font-awesome-icon :icon="['fasr', 'users']" />    
+        <RouterLink to="/nv" class="nav-link">Nhân viên</RouterLink>
+    </div>
 
     <div class="d-flex align-items-center py-2 pe-2 nav-wrap">
       <font-awesome-icon icon="fa-solid fa-sign-out" class="icon"/>

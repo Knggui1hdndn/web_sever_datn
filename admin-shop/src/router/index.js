@@ -108,6 +108,7 @@ const routes = [
             path :"",
             name : "Nhanvien",
             component: () => import("../views/membership/MemberShip.vue"),
+            
 
           },
           {
@@ -124,14 +125,11 @@ const routes = [
     path: "/login",
     name: "a",
     component: () => import("../views/Login/login.vue"),
+    
   
 },
-  {
-    path: "/register",
-    name: "register",
-    component: () =>
-      import( "../views/Login/Register.vue"),
-  },
+
+  
   {
     path: "/chat",
     component: () => import("../views/Base.vue"),
@@ -155,6 +153,22 @@ const routes = [
         component: () => import("../views/Chat/Chat.vue"),
       },
     ]
+  },
+  {
+    path: "/nv",
+    name:"uh",
+    component: () => import("../views/Base.vue"),
+    children :[
+      {
+        path :"",
+        name : "Nhanvien000",
+        component: () => import("../views/membership/dem.vue"),
+        
+  
+      },
+  
+    ]
+  
   },
 ]
 
