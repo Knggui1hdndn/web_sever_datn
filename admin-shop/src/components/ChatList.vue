@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div v-for="item in items" :key="item.user._id">
-            <router-link :to="'/chat/'+item.user._id" class="contact-wrap" v-if="item.lastMessage != null">
+            <router-link :to="'/chat/'+item.user._id" @click="$emit('updateName', item.user.name)" class="contact-wrap" v-if="item.lastMessage != null">
                 <img class="avatar" :src="item.user.avatar" :alt="item.user.name">
                 <div class="detail">
                     <div class="name">{{ item.user.name  }}</div>
@@ -12,6 +12,7 @@
                         <div class="msg" v-else>{{ "Bạn: "+  item.lastMessage.message }}</div>
                     </div>
                 </div>
+
             </router-link>
         </div>
     </div>
@@ -23,6 +24,7 @@ export default {
     props: {
         items: {type: Array},
     },
+    emits: ['updateName'],
     data: () => ({
 
     }),

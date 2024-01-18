@@ -142,15 +142,15 @@ const routes = [
         },
 
       
-      {
-        path: "",
-        name: "Chat",
-        component: () => import("../views/Chat/Chat.vue"),
-      },
+      // {
+      //   path: "",
+      //   name: "Chat",
+      //   component: () => import("../views/Chat/Chat.vue"),
+      // },
       {
         path: ":userId",
         name: "ChatDetail",
-        component: () => import("../views/Chat/Chat.vue"),
+        component: () => import("../views/Chat/ChatLayout.vue"),
       },
     ]
   },
