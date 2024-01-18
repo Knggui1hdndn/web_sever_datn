@@ -32,11 +32,10 @@
         <td>{{ data.totalCount }}</td>
         <td>{{ data.totalAmount }}</td>
         <td>
-          <RouterLink :to="`membership/${data.id}/detail`" class="nav-link">
-            <span class="action-icon">
-              <font-awesome-icon icon="fa-solid fa-edit" class="icon edit" />
-            </span>
-          </RouterLink>
+          <td>
+              <RouterLink :to="`membership/${data.id}/detail`" class="nav-link"><span
+                  class="action-icon"><font-awesome-icon icon="fa-solid fa-edit" class="icon edit" /></span></RouterLink>
+            </td>
         </td>
       </tr>
     </tbody>
