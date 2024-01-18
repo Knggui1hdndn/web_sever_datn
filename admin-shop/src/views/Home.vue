@@ -242,68 +242,7 @@ onMounted(()=>{
  
 
 })
-// const gradient = ref(null);
-// const gradient2 = ref(null);
 
-// const chartData = ref({
-//   labels: [
-//     'January',
-//     'February',
-//     'March',
-//     'April',
-//     'May',
-//     'June',
-//     'July'
-//   ],
-//   datasets: [
-//     {
-//       label: 'Data One',
-//       borderColor: '#FC2525',
-//       pointBackgroundColor: 'white',
-//       borderWidth: 1,
-//       pointBorderColor: 'white',
-//       backgroundColor: gradient,
-//       data: [40, 39, 10, 40, 39, 80, 40]
-//     },
-//     {
-//       label: 'Data Two',
-//       borderColor: '#05CBE1',
-//       pointBackgroundColor: 'white',
-//       pointBorderColor: 'white',
-//       borderWidth: 1,
-//       backgroundColor: gradient2,
-//       data: [60, 55, 32, 10, 2, 12, 53]
-//     }
-//   ]
-// });
-
-// const chartOptions = ref({
-//   responsive: true,
-//   maintainAspectRatio: false
-// });
-
-// onMounted(() => {
-//   gradient.value = createGradient('rgba(255, 0, 0, 0.5)', 'rgba(255, 0, 0, 0)');
-//   gradient2.value = createGradient(
-//     'rgba(0, 231, 255, 0.9)',
-//     'rgba(0, 231, 255, 0)'
-//   );
-
-//   const chart = new Line();
-//   chart.renderChart(chartData, chartOptions);
-// });
-
-// const createGradient = (color1, color2) => {
-//   const canvas = document.createElement('canvas');
-//   const ctx = canvas.getContext('2d');
-//   const gradient = ctx.createLinearGradient(0, 0, 0, 450);
-
-//   gradient.addColorStop(0, color1);
-//   gradient.addColorStop(0.5, color2);
-//   gradient.addColorStop(1, color2);
-
-//   return gradient;
-// };
 
 </script>
 
