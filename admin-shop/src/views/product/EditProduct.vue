@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-          <InputComp v-model="product.sale" name="sale" label="Giảm giá" :rules="notBlank" />
+          <InputComp v-model="product.sale" name="sale" label="Giảm giá" :rules="saleRules" />
         </div>
         <div class="col-12 col-md-6">
           <SelectComp v-model="product.idCata" :items="categories" itemTitle="category" itemValue="_id" name="idCata"
@@ -53,7 +53,7 @@
             <div v-for="(imageProductQuantity, indexImage) in productDetail.imageProductQuantity" :key="imageProductQuantity._id"
               class="d-flex align-items-center image-product-quantity">
               <div class="flex-grow-1 pe-2">
-                <InputComp v-model="imageProductQuantity.quantity" label="Số lượng" :rules="notBlank" />
+                <InputComp v-model="imageProductQuantity.quantity" label="Số lượng" :rules="saleRules" />
               </div>
               <div class="flex-grow-1 pe-2">
                 <InputComp v-model="imageProductQuantity.imageProduct.color" label="Màu sắc" :rules="notBlank" />
@@ -150,7 +150,10 @@ import { ref } from "vue";
 import { useRoute } from 'vue-router'
 const route = useRoute();
 const { id } = route.params;
-
+const saleRules = [
+    (v) => !!v || "Không được để trống",
+    (v) => !isNaN(parseFloat(v)) && v >= 0 || "Giảm giá phải là một số không âm",
+];
 let product = ref({
   name: "",
   price: "",
