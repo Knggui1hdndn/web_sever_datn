@@ -4,7 +4,7 @@
     <div v-if="!!convUserId" class="wrapper">
       <div class="header">
         <div>
-          <div class="name">{{ 'Abcasdfsaf' }}</div>
+          <div class="name">{{ 'Khang Nguyễn' }}</div>
           <div class="info">
             online
           </div>
