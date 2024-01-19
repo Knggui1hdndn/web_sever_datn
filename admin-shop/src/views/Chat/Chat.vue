@@ -1,10 +1,10 @@
 <template>
-  <ChatLayout>
-    <div class="">
+  <!-- <ChatLayout> -->
+  <div class="">
     <div v-if="!!convUserId" class="wrapper">
       <div class="header">
         <div>
-          <div class="name">{{ 'Khang Nguyễn' }}</div>
+          <div class="name">{{ name }}</div>
           <div class="info">
             online
           </div>
@@ -55,7 +55,7 @@
     </div>
 
   </div>
-  </ChatLayout>
+  <!-- </ChatLayout> -->
 </template>
 <script >
 import ApiService from "@/services/api.service";
@@ -63,8 +63,11 @@ import io from 'socket.io-client';
 import ChatLayout from "./ChatLayout.vue";
 
 export default {
-  components:{
-    ChatLayout
+  // components:{
+  //   ChatLayout
+  // },
+  props: {
+    name: String,
   },
   data() {
     return {
@@ -159,7 +162,7 @@ export default {
   },
   watch: {
     convUserId() {
-      this.getInfoConversation();
+      this.getChatInfo();
     }
   }
 }
