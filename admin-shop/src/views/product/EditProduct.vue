@@ -9,6 +9,9 @@
         <div class="col-12 col-md-6">
           <InputComp v-model="product.price" name="price" label="Giá" :rules="notBlank" />
         </div>
+        <div class="col-12 col-md-6">
+          <InputComp v-model="product.importPrice" name="importPrice" label="Giá Nhập" :rules="notBlank" type="number"/>
+        </div>
         <div class="col-12 col-md-12">
           <InputComp v-model="product.description" name="description" label="Mô tả" :rules="notBlank" />
         </div>
@@ -155,6 +158,7 @@ const saleRules = [
     (v) => !isNaN(parseFloat(v)) && v >= 0 || "Giảm giá phải là một số không âm",
 ];
 let product = ref({
+  importPrice:"",
   name: "",
   price: "",
   sold: "",

@@ -3,7 +3,7 @@
         <div v-for="item in items" :key="item.user._id">
             <router-link :to="'/chat/'+item.user._id" @click="$emit('updateName', item.user.name)" class="contact-wrap" v-if="item.lastMessage != null">
                 <img class="avatar" :src="item.user.avatar" :alt="item.user.name">
-                <div class="detail">
+                <div class="detail" @click="handleItemClick(item)">
                     <div class="name">{{ item.user.name  }}</div>
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="msg" v-if="item.user._id == item.lastMessage.sender">
@@ -23,6 +23,7 @@ export default {
     name: 'ChatList',
     props: {
         items: {type: Array},
+        item:{type:Object}
     },
     emits: ['updateName'],
     data: () => ({
@@ -31,7 +32,11 @@ export default {
     methods: {
         convertTime() {
 
-        }
+        },
+        handleItemClick(item) {
+ 
+         this.$emit('item-clicked', item);
+      },
     }
 }
 

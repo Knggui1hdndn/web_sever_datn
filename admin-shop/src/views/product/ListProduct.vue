@@ -36,9 +36,8 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Giá Nhập</th>
-
           <th scope="col">Giá Bán</th>
+           <th scope="col">Giá Nhập</th>
           <th scope="col">Thể Loại </th>
           <th scope="col">Số Lượng</th>
           <th scope="col">Đã Bán</th>
@@ -54,9 +53,9 @@
 
             {{ item.name }}
           </td>
-          <td>{{ item.importPrice }}</td>
 
           <td>{{ item.price }}</td>
+          <td>{{ item.importPrice }}</td>
           <td>{{ item.idCata }}</td>
           <td>
             <span v-for="(i, index) in countArr" :key="index">
